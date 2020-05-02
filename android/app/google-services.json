@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "463102482423",
+    "firebase_url": "https://expressservices-8479e.firebaseio.com",
+    "project_id": "expressservices-8479e",
+    "storage_bucket": "expressservices-8479e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463102482423:android:bb180dc17629af4aa100f2",
+        "android_client_info": {
+          "package_name": "com.example.marinez_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463102482423-1ktrjijib3nd7c2s651au2e4m1qvi7ud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-biLOTOR0JH1ko7YigfJPb9ANvcYNSWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463102482423-1ktrjijib3nd7c2s651au2e4m1qvi7ud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,35 @@
+{
+    "appName" : "Demo",
+    "routes" : [
+        {
+            "route" : "electricidad",
+            "image" : "assets/electricidad.jpg",
+            "text": "Electricidad"
+        },
+        {
+            "route" : "instalacion",
+            "image": "assets/instalacion.jpg",
+            "text": "Instalaciones"
+        },
+        {
+            "route" : "miscelaneos",
+            "image" :"assets/miscelaneos.jpg",
+            "text": "Miscelaneos"
+        },
+        {
+            "route" : "pintura",
+            "image" :"assets/pintura.jpg",
+            "text": "Pintura"
+        },
+        {
+            "route" : "plomeria",
+            "image" : "assets/plomeria.jpg",
+            "text": "Plomeria"
+        },
+        {
+            "route" : "presupuesto",
+            "image" :"assets/presupuesto.jpg",
+            "text": "Presupuesto"
+        }
+    ]
+}
