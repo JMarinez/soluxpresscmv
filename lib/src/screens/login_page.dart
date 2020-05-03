@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:marinez_demo/src/widgets/form_input.dart';
+import 'package:marinez_demo/src/widgets/submit_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Container _buildLoginForm(BuildContext context) {
+  Widget _buildLoginForm(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Form(
@@ -62,27 +63,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  GestureDetector _buildLoginButton(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        height: 60.0,
-        width: double.infinity,
-        child: Center(
-          child: Text(
-            'Log in',
-            style: TextStyle(color: Colors.white, fontSize: 16.0),
-          ),
-        ),
-        color: Theme.of(context).buttonColor,
-      ),
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
+  Widget _buildLoginButton(BuildContext context) {
+    return SubmitButton(
+        text: 'Log in',
+        onPressed: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
-        Navigator.pushNamed(context, 'menu');
-      },
-    );
+          Navigator.pushNamed(context, 'menu');
+        });
   }
 
   Widget _buildEmailField() {

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:marinez_demo/src/widgets/form_input.dart';
+import 'package:marinez_demo/src/widgets/submit_button.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -45,7 +46,7 @@ class _SignupPageState extends State<SignupPage> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(bottom: 18.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: Column(
                 children: <Widget>[
                   _buildNameField(),
@@ -54,7 +55,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 18.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: Column(
                 children: <Widget>[
                   _buildMobileNumberField(),
@@ -63,7 +64,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 18.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: Column(
                 children: <Widget>[
                   _buildAddressField(),
@@ -72,7 +73,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 18.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: Column(
                 children: <Widget>[
                   _buildEmailField(),
@@ -82,7 +83,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 18.0, bottom: 36.0),
+              padding: const EdgeInsets.only(top: 10.0, bottom: 36.0),
               child: _buildSignupButton(context),
             ),
           ],
@@ -113,15 +114,12 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Widget _buildAddressField() {
-    return FormInput(
-        hintText: 'Direccion',
-        prefixIcon: Icon(Icons.map));
+    return FormInput(hintText: 'Direccion', prefixIcon: Icon(Icons.map));
   }
 
   Widget _buildAddressRefField() {
     return FormInput(
-        hintText: 'Referencia (opcional)',
-        prefixIcon: Icon(Icons.location_on));
+        hintText: 'Referencia (opcional)', prefixIcon: Icon(Icons.location_on));
   }
 
   Widget _buildEmailField() {
@@ -138,19 +136,9 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Widget _buildSignupButton(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        height: 60.0,
-        width: double.infinity,
-        child: Center(
-          child: Text(
-            'Registrate',
-            style: TextStyle(color: Colors.white, fontSize: 16.0),
-          ),
-        ),
-        color: Theme.of(context).buttonColor,
-      ),
-      onTap: () => Navigator.pop(context),
+    return SubmitButton(
+      text: 'Registrar',
+      onPressed: () => Navigator.pop(context),
     );
   }
 }

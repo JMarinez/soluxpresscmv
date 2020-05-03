@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:marinez_demo/src/models/exp_service.dart';
 import 'package:marinez_demo/src/widgets/form_input.dart';
+import 'package:marinez_demo/src/widgets/submit_button.dart';
 
 class FormPage extends StatefulWidget {
   final String title;
@@ -26,7 +28,7 @@ class _FormPageState extends State<FormPage> {
         child: Form(
           key: globalKey,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -34,7 +36,10 @@ class _FormPageState extends State<FormPage> {
                 _buildServiceDescriptionField(),
                 _buildPaymentMethodField(),
                 _buildAttachmentsField(),
-                _buildSendServiceForm(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18.0),
+                  child: _buildSendServiceForm(),
+                ),
               ],
             ),
           ),
@@ -44,10 +49,9 @@ class _FormPageState extends State<FormPage> {
   }
 
   Widget _buildServiceTypeField() {
-    _serviceType.text = widget.title;
     return FormInput(
-      controller: _serviceType,
-      enabled: false,
+      initialValue: widget.title,
+      readOnly: true,
     );
   }
 
@@ -59,24 +63,28 @@ class _FormPageState extends State<FormPage> {
   }
 
   Widget _buildPaymentMethodField() {
-
-    return DropdownButton(
-      value: initialValue,
-      items: <DropdownMenuItem<Payment>>[
-        DropdownMenuItem(
-          child: Text('Efectivo'),
-          value: Payment.cash,
-        ),
-        DropdownMenuItem(
-          child: Text('Transaccion'),
-          value: Payment.transaction,
+    return Column(
+      children: <Widget>[
+        Text('Metodo de pago'),
+        DropdownButton(
+          value: initialValue,
+          items: <DropdownMenuItem<Payment>>[
+            DropdownMenuItem(
+              child: Text('Efectivo'),
+              value: Payment.cash,
+            ),
+            DropdownMenuItem(
+              child: Text('Transaccion'),
+              value: Payment.transaction,
+            ),
+          ],
+          onChanged: (Payment newValue) {
+            setState(() {
+              initialValue = newValue;
+            });
+          },
         ),
       ],
-      onChanged: (Payment newValue) {
-        setState(() {
-          initialValue = newValue;
-        });
-      },
     );
   }
 
@@ -91,6 +99,11 @@ class _FormPageState extends State<FormPage> {
   }
 
   Widget _buildSendServiceForm() {
-    return FlatButton(child: Text('Enviar'));
+    return SubmitButton(
+      text: 'Enviar',
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
   }
 }

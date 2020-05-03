@@ -7,35 +7,39 @@ class FormInput extends StatelessWidget {
   final Function(String) validator;
   final bool obscureText;
   final FocusNode focusNode;
-  final bool enabled;
+  final bool readOnly;
+  final initialValue;
 
   FormInput({
     this.hintText,
-    this.obscureText,
+    this.obscureText = false,
     this.validator,
     this.prefixIcon,
     this.controller,
     this.focusNode,
-    this.enabled,
+    this.readOnly = false,
+    this.initialValue,
   });
 
   @override
   Widget build(BuildContext context) {
-    bool isPasswordField =
-        obscureText == null ? false : (obscureText ? true : false);
-    return TextFormField(
-      enabled: enabled,
-      focusNode: focusNode,
-      controller: controller,
-      validator: validator,
-      obscureText: isPasswordField,
-      decoration: InputDecoration(
-        prefixIcon: prefixIcon,
-        hintText: hintText,
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(0),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: TextFormField(
+        initialValue: initialValue,
+        readOnly: readOnly,
+        focusNode: focusNode,
+        controller: controller,
+        validator: validator,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          prefixIcon: prefixIcon,
+          labelText: hintText,
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
         ),
       ),
     );
