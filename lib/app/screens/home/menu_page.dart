@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:marinez_demo/app/screens/home/form_page.dart';
 import 'package:marinez_demo/services/menu_provider.dart';
 import 'package:marinez_demo/components/menu_option.dart';
 
@@ -70,8 +71,17 @@ class MenuPage extends StatelessWidget {
 
     snapshot.data.forEach((option) {
       var temp = MenuOption(
-        title: option['text'],
         imageData: option['image'],
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FormPage(
+                title: option['title'],
+              ),
+            ),
+          );
+        },
       );
       menuList.add(temp);
     });

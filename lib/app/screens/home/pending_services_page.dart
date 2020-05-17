@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:marinez_demo/models/exp_service.dart';
-import 'package:marinez_demo/app/screens/services_tab_pages/finished_services_page.dart';
-import 'package:marinez_demo/app/screens/services_tab_pages/progress_services_page.dart';
-import 'package:marinez_demo/app/screens/services_tab_pages/queue_services_page.dart';
+import 'package:marinez_demo/app/screens/home/services_tab_pages/finished_services_page.dart';
+import 'package:marinez_demo/app/screens/home/services_tab_pages/progress_services_page.dart';
+import 'package:marinez_demo/app/screens/home/services_tab_pages/queue_services_page.dart';
 
 class PendingServicesPage extends StatelessWidget {
   final List<ExpService> _services = [

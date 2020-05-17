@@ -20,7 +20,6 @@ class _SignupPageState extends State<SignupPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            // TODO: Logo del app
             Padding(
               padding: const EdgeInsets.all(36.0),
               child: Text(
@@ -89,7 +88,6 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  //TODO: Validation, controllers
   Widget _buildNameField() {
     return FormInput(hintText: 'Nombre', prefixIcon: Icon(Icons.person));
   }
