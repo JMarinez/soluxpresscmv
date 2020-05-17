@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:marinez_demo/src/widgets/form_input.dart';
-import 'package:marinez_demo/src/widgets/submit_button.dart';
+import 'package:marinez_demo/components/form_input.dart';
+import 'package:marinez_demo/components/submit_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override

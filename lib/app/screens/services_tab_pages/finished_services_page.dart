@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:marinez_demo/src/models/exp_service.dart';
+import 'package:marinez_demo/models/exp_service.dart';
 
-class ProgressServicesPage extends StatelessWidget {
+class FinishedServicesPage extends StatelessWidget {
   final bool isEmpty;
   final Status status;
   final List<ExpService> services;
 
-  ProgressServicesPage(
-      {this.isEmpty = true, this.status = Status.in_progress, this.services});
+  FinishedServicesPage({
+    this.isEmpty = true,
+    this.status = Status.finished,
+    this.services,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class ProgressServicesPage extends StatelessWidget {
     return ListView.builder(
       itemCount: services.length,
       itemBuilder: (context, index) {
-        if (services[index].serviceStatus == Status.in_progress) {
+        if (services[index].serviceStatus == Status.finished) {
           return Card(
             child: ListTile(
               leading: CircleAvatar(

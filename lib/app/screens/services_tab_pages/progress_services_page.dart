@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:marinez_demo/src/models/exp_service.dart';
+import 'package:marinez_demo/models/exp_service.dart';
 
-class QueueServicesPage extends StatelessWidget {
+class ProgressServicesPage extends StatelessWidget {
   final bool isEmpty;
   final Status status;
   final List<ExpService> services;
 
-  QueueServicesPage({
-    this.isEmpty = true,
-    this.status = Status.sent,
-    this.services,
-  });
+  ProgressServicesPage(
+      {this.isEmpty = true, this.status = Status.in_progress, this.services});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _createServicesList(context),
+      body: _createServicesList(context)
     );
   }
 
@@ -23,7 +20,7 @@ class QueueServicesPage extends StatelessWidget {
     return ListView.builder(
       itemCount: services.length,
       itemBuilder: (context, index) {
-        if (services[index].serviceStatus == Status.sent) {
+        if (services[index].serviceStatus == Status.in_progress) {
           return Card(
             child: ListTile(
               leading: CircleAvatar(

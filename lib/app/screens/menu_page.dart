@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:marinez_demo/src/providers/menu_provider.dart';
-import 'package:marinez_demo/src/widgets/menu_option.dart';
+import 'package:marinez_demo/services/menu_provider.dart';
+import 'package:marinez_demo/components/menu_option.dart';
 
 class MenuPage extends StatelessWidget {
   @override

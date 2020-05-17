@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:marinez_demo/src/models/exp_service.dart';
-import 'package:marinez_demo/src/widgets/form_input.dart';
-import 'package:marinez_demo/src/widgets/submit_button.dart';
+import 'package:marinez_demo/models/exp_service.dart';
+import 'package:marinez_demo/components/form_input.dart';
+import 'package:marinez_demo/components/submit_button.dart';
 
 class FormPage extends StatefulWidget {
   final String title;
@@ -15,8 +15,7 @@ class FormPage extends StatefulWidget {
 
 class _FormPageState extends State<FormPage> {
   final globalKey = GlobalKey<FormState>();
-
-  TextEditingController _serviceType = TextEditingController();
+  
   TextEditingController _description = TextEditingController();
   var initialValue = Payment.cash;
 

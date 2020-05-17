@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:marinez_demo/src/screens/form_page.dart';
-import 'package:marinez_demo/src/widgets/option_clip.dart';
+import 'package:marinez_demo/app/screens/form_page.dart';
+import 'package:marinez_demo/components/option_clip.dart';
 
 class MenuOption extends StatelessWidget {
   final String title;

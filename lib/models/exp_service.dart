@@ -33,17 +33,20 @@ class ExpService {
 }
 
 enum Status {
+  none,
   sent,
   in_progress,
   finished,
 }
 
 enum Payment {
+  none,
   cash,
   transaction,
 }
 
 enum ServiceType {
+  none,
   electricity,
   instalation,
   misc,

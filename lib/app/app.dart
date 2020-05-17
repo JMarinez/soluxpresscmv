@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:marinez_demo/src/screens/form_page.dart';
-import 'package:marinez_demo/src/screens/login_page.dart';
-import 'package:marinez_demo/src/screens/menu_page.dart';
-import 'package:marinez_demo/src/screens/pending_services_page.dart';
-import 'package:marinez_demo/src/screens/signup_page.dart';
+import 'package:marinez_demo/app/screens/form_page.dart';
+import 'package:marinez_demo/app/screens/login_page.dart';
+import 'package:marinez_demo/app/screens/menu_page.dart';
+import 'package:marinez_demo/app/screens/pending_services_page.dart';
+import 'package:marinez_demo/app/screens/signup_page.dart';
 
 class MyApp extends StatelessWidget {
   @override

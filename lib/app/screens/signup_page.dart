@@ -1,10 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:marinez_demo/src/widgets/form_input.dart';
-import 'package:marinez_demo/src/widgets/submit_button.dart';
-
-FirebaseAuth _auth = FirebaseAuth.instance;
+import 'package:marinez_demo/components/form_input.dart';
+import 'package:marinez_demo/components/submit_button.dart';
 
 class SignupPage extends StatefulWidget {
   @override
