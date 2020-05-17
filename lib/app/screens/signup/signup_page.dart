@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/components/submit_button.dart';
+import 'package:marinez_demo/models/profile_reference.dart';
+import 'package:marinez_demo/services/firebase_auth_service.dart';
+import 'package:marinez_demo/services/firestore_service.dart';
+import 'package:provider/provider.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -9,6 +13,13 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  TextEditingController _name = TextEditingController();
+  TextEditingController _address = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _mobileNumber = TextEditingController();
+  TextEditingController _pass = TextEditingController();
+  TextEditingController _cnfPass = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +57,6 @@ class _SignupPageState extends State<SignupPage> {
               child: Column(
                 children: <Widget>[
                   _buildNameField(),
-                  _buildSurnameField(),
                 ],
               ),
             ),
@@ -55,7 +65,7 @@ class _SignupPageState extends State<SignupPage> {
               child: Column(
                 children: <Widget>[
                   _buildMobileNumberField(),
-                  _buildPhoneNumberField(),
+                  //_buildPhoneNumberField(),
                 ],
               ),
             ),
@@ -64,7 +74,7 @@ class _SignupPageState extends State<SignupPage> {
               child: Column(
                 children: <Widget>[
                   _buildAddressField(),
-                  _buildAddressRefField(),
+                  //_buildAddressRefField(),
                 ],
               ),
             ),
@@ -89,17 +99,17 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Widget _buildNameField() {
-    return FormInput(hintText: 'Nombre', prefixIcon: Icon(Icons.person));
-  }
-
-  Widget _buildSurnameField() {
     return FormInput(
-        hintText: 'Apellido', prefixIcon: Icon(Icons.person_outline));
+        controller: _name,
+        hintText: 'Nombre completo',
+        prefixIcon: Icon(Icons.person));
   }
 
   Widget _buildMobileNumberField() {
     return FormInput(
-        hintText: 'Numero movil', prefixIcon: Icon(Icons.phone_android));
+        controller: _mobileNumber,
+        hintText: 'Numero movil',
+        prefixIcon: Icon(Icons.phone_android));
   }
 
   Widget _buildPhoneNumberField() {
@@ -109,7 +119,10 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Widget _buildAddressField() {
-    return FormInput(hintText: 'Direccion', prefixIcon: Icon(Icons.map));
+    return FormInput(
+        controller: _address,
+        hintText: 'Direccion',
+        prefixIcon: Icon(Icons.map));
   }
 
   Widget _buildAddressRefField() {
@@ -118,22 +131,56 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Widget _buildEmailField() {
-    return FormInput(hintText: 'Email', prefixIcon: Icon(Icons.mail_outline));
+    return FormInput(
+        controller: _email,
+        hintText: 'Email',
+        prefixIcon: Icon(Icons.mail_outline));
   }
 
   Widget _buildPasswordField() {
-    return FormInput(hintText: 'Contraseña', prefixIcon: Icon(Icons.lock));
+    return FormInput(
+        controller: _pass,
+        hintText: 'Contraseña',
+        prefixIcon: Icon(Icons.lock));
   }
 
   Widget _buildConfirmPasswordField() {
     return FormInput(
-        hintText: 'Confirmar Contraseña', prefixIcon: Icon(Icons.lock_open));
+        controller: _cnfPass,
+        hintText: 'Confirmar Contraseña',
+        prefixIcon: Icon(Icons.lock_open));
   }
 
   Widget _buildSignupButton(BuildContext context) {
     return SubmitButton(
-      text: 'Registrar',
-      onPressed: () => Navigator.pop(context),
-    );
+        text: 'Registrar',
+        onPressed: () {
+          if (_pass.text == _cnfPass.text) {
+            createWithEmailAndPassword(context);
+            Navigator.pop(context);
+          }
+        });
+  }
+
+  Future createWithEmailAndPassword(BuildContext context) async {
+    try {
+      final firebaseAuth =
+          Provider.of<FirebaseAuthService>(context, listen: false);
+      final user = await firebaseAuth.createUserWithEmailPassword(
+          _email.text, _pass.text);
+      final firestore = Provider.of<FirestoreService>(context, listen: false);
+      //TODO: Why doesn't it upload data to Firestore?
+      await firestore.setUserProfile(
+        ProfileReference(
+          email: _email.text,
+          displayName: _name.text,
+          phoneNumber: _mobileNumber.text,
+          address: _address.text,
+        ),
+      );
+      print(user);
+    } catch (e) {
+      print(e);
+    }
   }
 }

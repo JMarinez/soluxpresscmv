@@ -46,7 +46,7 @@ class FirebaseAuthService {
   Future<User> createUserWithEmailPassword(String email, String password) async {
     final AuthResult authResult = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     try {
-      await authResult.user.sendEmailVerification();
+      // await authResult.user.sendEmailVerification();
     } catch (e) {
       print(e);
     }

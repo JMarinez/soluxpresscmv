@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:marinez_demo/app/screens/home/menu_page.dart';
+import 'package:marinez_demo/app/screens/signup/signup_page.dart';
 
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/components/submit_button.dart';
+import 'package:marinez_demo/services/firebase_auth_service.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -71,7 +75,8 @@ class _LoginPageState extends State<LoginPage> {
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
-          Navigator.pushNamed(context, 'menu');
+          final firebaseAuth = Provider.of<FirebaseAuthService>(context, listen: false);
+          firebaseAuth.signInWithEmailAndPassword(_email.text, _password.text);
         });
   }
 
@@ -105,7 +110,12 @@ class _LoginPageState extends State<LoginPage> {
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
-          Navigator.pushNamed(context, 'signup');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignupPage(),
+            ),
+          );
         });
   }
 }

@@ -4,12 +4,12 @@ class ProfileReference {
   final String phoneNumber;
   final String address;
 
-  ProfileReference(
+  ProfileReference({
     this.email,
     this.displayName,
     this.phoneNumber,
     this.address,
-  );
+  });
 
   factory ProfileReference.fromMap(Map<String, dynamic> data) {
     if (data == null) {
@@ -34,7 +34,12 @@ class ProfileReference {
       return null;
     }
 
-    return ProfileReference(email, displayName, phoneNumber, address);
+    return ProfileReference(
+      email: email,
+      displayName: displayName,
+      phoneNumber: phoneNumber,
+      address: address,
+    );
   }
 
   Map<String, dynamic> toMap() {
