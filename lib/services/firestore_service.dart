@@ -8,7 +8,7 @@ class FirestoreService {
   FirestoreService({this.userUid});
 
   Future setUserProfile(ProfileReference profileReference) async {
-    final path = FirestorePath.profile(userUid);
+    final path = FirestorePath.profile(profileReference.userUid);
     final reference = Firestore.instance.document(path);
     
     await reference.setData(profileReference.toMap());

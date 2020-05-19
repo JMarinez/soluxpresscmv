@@ -22,25 +22,28 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return Provider<FirestoreService>(
+      create: (_) => FirestoreService(),
+          child: Scaffold(
         backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(36.0),
-              child: Text(
-                'Servicios Express',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 50.0),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(36.0),
+                child: Text(
+                  'Servicios Express',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 50.0),
+                ),
               ),
-            ),
-            _buildSignupForm(context),
-          ],
+              _buildSignupForm(context),
+            ],
+          ),
         ),
       ),
     );
@@ -154,9 +157,9 @@ class _SignupPageState extends State<SignupPage> {
   Widget _buildSignupButton(BuildContext context) {
     return SubmitButton(
         text: 'Registrar',
-        onPressed: () {
+        onPressed: () async {
           if (_pass.text == _cnfPass.text) {
-            createWithEmailAndPassword(context);
+            await createWithEmailAndPassword(context);
             Navigator.pop(context);
           }
         });
@@ -169,9 +172,9 @@ class _SignupPageState extends State<SignupPage> {
       final user = await firebaseAuth.createUserWithEmailPassword(
           _email.text, _pass.text);
       final firestore = Provider.of<FirestoreService>(context, listen: false);
-      //TODO: Why doesn't it upload data to Firestore?
       await firestore.setUserProfile(
         ProfileReference(
+          userUid: user.uid,
           email: _email.text,
           displayName: _name.text,
           phoneNumber: _mobileNumber.text,

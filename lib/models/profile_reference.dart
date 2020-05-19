@@ -1,10 +1,12 @@
 class ProfileReference {
+  final String userUid;
   final String email;
   final String displayName;
   final String phoneNumber;
   final String address;
 
   ProfileReference({
+    this.userUid,
     this.email,
     this.displayName,
     this.phoneNumber,
