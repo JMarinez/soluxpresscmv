@@ -1,42 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:marinez_demo/models/exp_service.dart';
+import 'package:provider/provider.dart';
 
 class QueueServicesPage extends StatelessWidget {
-  final bool isEmpty;
-  final Status status;
-  final List<ExpService> services;
-
-  QueueServicesPage({
-    this.isEmpty = true,
-    this.status = Status.sent,
-    this.services,
-  });
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _createServicesList(context),
-    );
-  }
-
-  Widget _createServicesList(BuildContext context) {
+    List<ExpService> _serviceList = Provider.of<List<ExpService>>(context);
     return ListView.builder(
-      itemCount: services.length,
-      itemBuilder: (context, index) {
-        if (services[index].serviceStatus == Status.sent) {
-          return Card(
-            child: ListTile(
-              leading: CircleAvatar(
-                child: Icon(Icons.person),
-              ),
-              title: Text(services[index].serviceDescription),
-              subtitle: Text(services[index].userFullName),
-              trailing: Icon(Icons.arrow_right),
+      itemCount: _serviceList?.length ?? 0,
+      itemBuilder: (_, index) {
+        return Card(
+          child: ListTile(
+            leading: CircleAvatar(
+              child: Icon(Icons.person),
             ),
-          );
-        } else {
-          return Container();
-        }
+            title: Text(_serviceList[index].description),
+            subtitle: Text(_serviceList[index].userFullName),
+            trailing: Icon(Icons.arrow_right),
+          ),
+        );
       },
     );
   }

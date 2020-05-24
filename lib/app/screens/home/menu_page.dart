@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marinez_demo/app/screens/home/form_page.dart';
 import 'package:marinez_demo/app/screens/home/pending_services_page.dart';
+import 'package:marinez_demo/app/screens/home/profile/profile_page.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
 import 'package:marinez_demo/services/menu_provider.dart';
 import 'package:marinez_demo/components/menu_option.dart';
@@ -10,17 +11,32 @@ import 'package:provider/provider.dart';
 class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final firebaseAuth =
+        Provider.of<FirebaseAuthService>(context, listen: false);
+
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Hola'),
+            ),
+            ListTile(
+              title: Text('Profile'),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage())),
+            ),
+            Divider(),
+            ListTile(
+              title: Text('Log Out'),
+              onTap: () async => await firebaseAuth.signOut(),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: Text('Servicios Express'),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            final firebaseAuth = Provider.of<FirebaseAuthService>(context, listen: false);
-            firebaseAuth.signOut();
-          }
-        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(

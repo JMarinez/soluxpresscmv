@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:marinez_demo/app/screens/home/menu_page.dart';
-import 'package:marinez_demo/app/screens/signup/signup_page.dart';
+import 'package:provider/provider.dart';
 
+import 'package:marinez_demo/app/screens/signup/signup_page.dart';
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/components/submit_button.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,6 +19,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
+    _email.dispose();
+    _password.dispose();
+    _focusEmailNode.dispose();
+    _focusPasswordNode.dispose();
     super.dispose();
   }
 
@@ -70,13 +73,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton(BuildContext context) {
     return SubmitButton(
         text: 'Log in',
-        onPressed: () {
+        onPressed: () async {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
           final firebaseAuth = Provider.of<FirebaseAuthService>(context, listen: false);
-          firebaseAuth.signInWithEmailAndPassword(_email.text, _password.text);
+          await firebaseAuth.signInWithEmailAndPassword(_email.text, _password.text);
+
         });
   }
 
@@ -93,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
     return FormInput(
       focusNode: _focusPasswordNode,
       controller: _password,
+      obscureText: true,
       hintText: 'Contraseña',
       prefixIcon: Icon(Icons.lock),
     );

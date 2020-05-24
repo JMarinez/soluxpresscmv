@@ -28,8 +28,6 @@ class FirebaseAuthService {
 
     return User(
       uid: user.uid,
-      displayName: user.displayName,
-      phoneNumber: user.phoneNumber,
     );
   }
 
@@ -56,6 +54,14 @@ class FirebaseAuthService {
   Future<User> currentUser() async {
     final FirebaseUser user = await _firebaseAuth.currentUser();
     return _userFromFirebase(user);
+  }
+
+  Future updateUserDisplayName(String displayName) async {
+    final FirebaseUser user = await _firebaseAuth.currentUser();
+    final userInfo = UserUpdateInfo();
+    userInfo.displayName = displayName;
+    // userInfo.photoUrl = photoUrl;
+    user.updateProfile(userInfo);
   }
 
   Future signOut() {

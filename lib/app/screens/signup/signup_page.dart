@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:marinez_demo/components/form_input.dart';
@@ -19,6 +20,17 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController _mobileNumber = TextEditingController();
   TextEditingController _pass = TextEditingController();
   TextEditingController _cnfPass = TextEditingController();
+
+  @override
+  void dispose() { 
+    _name.dispose();
+    _address.dispose();
+    _email.dispose();
+    _mobileNumber.dispose();
+    _pass.dispose();
+    _cnfPass.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +155,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget _buildPasswordField() {
     return FormInput(
         controller: _pass,
+        obscureText: true,
         hintText: 'Contraseña',
         prefixIcon: Icon(Icons.lock));
   }
@@ -150,6 +163,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget _buildConfirmPasswordField() {
     return FormInput(
         controller: _cnfPass,
+        obscureText: true,
         hintText: 'Confirmar Contraseña',
         prefixIcon: Icon(Icons.lock_open));
   }
@@ -171,6 +185,7 @@ class _SignupPageState extends State<SignupPage> {
           Provider.of<FirebaseAuthService>(context, listen: false);
       final user = await firebaseAuth.createUserWithEmailPassword(
           _email.text, _pass.text);
+      
       final firestore = Provider.of<FirestoreService>(context, listen: false);
       await firestore.setUserProfile(
         ProfileReference(
