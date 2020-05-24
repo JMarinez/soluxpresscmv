@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:marinez_demo/models/exp_service.dart';
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/components/submit_button.dart';
+import 'package:marinez_demo/models/profile_reference.dart';
+import 'package:marinez_demo/services/firebase_auth_service.dart';
+import 'package:marinez_demo/services/firestore_service.dart';
+import 'package:provider/provider.dart';
 
 class FormPage extends StatefulWidget {
   final String title;
@@ -15,9 +20,10 @@ class FormPage extends StatefulWidget {
 
 class _FormPageState extends State<FormPage> {
   final globalKey = GlobalKey<FormState>();
-  
+
   TextEditingController _description = TextEditingController();
-  var initialValue = Payment.cash;
+
+  Payment initialValue = Payment.cash;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +43,7 @@ class _FormPageState extends State<FormPage> {
                 _buildAttachmentsField(),
                 Padding(
                   padding: const EdgeInsets.only(top: 18.0),
-                  child: _buildSendServiceForm(),
+                  child: _buildSendServiceForm(context),
                 ),
               ],
             ),
@@ -97,10 +103,29 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
-  Widget _buildSendServiceForm() {
+  Widget _buildSendServiceForm(BuildContext context) {
     return SubmitButton(
       text: 'Enviar',
-      onPressed: () {
+      onPressed: () async {
+        final user = Provider.of<User>(context, listen: false);
+        final firestore = Provider.of<FirestoreService>(context, listen: false);
+        final snapshot = await firestore.getUserProfile(user.uid);
+
+        final userProfile = ProfileReference.fromMap(snapshot.data);
+
+        final newService = ExpService(
+          address: userProfile.address,
+          date: DateTime.now(),
+          description: _description.text,
+          payingMethod: initialValue.index,
+          serviceType: getServiceTypeIndex(widget.title),
+          status: Status.sent.index,
+          userEmail: userProfile.email,
+          userFullName: userProfile.displayName,
+          userPhoneNumber: userProfile.phoneNumber,
+        );
+
+        await firestore.setService(user.uid, newService);
         Navigator.pop(context);
       },
     );

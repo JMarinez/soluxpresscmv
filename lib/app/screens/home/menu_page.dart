@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:marinez_demo/app/screens/home/form_page.dart';
-import 'package:marinez_demo/app/screens/home/pending_services_page.dart';
+import 'package:marinez_demo/app/screens/home/form/form_page.dart';
+import 'package:marinez_demo/app/screens/home/service_tab_page/pending_services_page.dart';
 import 'package:marinez_demo/app/screens/home/profile/profile_page.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
 import 'package:marinez_demo/services/menu_provider.dart';

@@ -24,10 +24,17 @@ class FirestoreService {
   }
 
   Future setService(String userUid, ExpService service) async {
-    final path = FirestorePath.service(userUid, service.uid);
-    final reference = Firestore.instance.document(path);
+    final path = FirestorePath.services(userUid);
+    final reference = Firestore.instance.collection(path);
 
-    await reference.setData(service.toMap());
+    await reference.add(service.toMap());
+  }
+
+  Future<DocumentSnapshot> getUserProfile(String userUid) async {
+    final path = FirestorePath.profile(userUid);
+    final document = Firestore.instance.document(path);
+
+    return await document.get();
   }
 
   Stream<List<ExpService>> serviceListStream(String userUid, int status) {

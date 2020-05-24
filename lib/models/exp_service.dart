@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:marinez_demo/constants/strings.dart';
+
 class ExpService {
   final String uid;
   final int serviceType;
@@ -8,7 +11,7 @@ class ExpService {
   final String userPhoneNumber;
   final String address;
   final int payingMethod;
-  final String date;
+  final DateTime date;
   final int status;
 
   ExpService({
@@ -31,7 +34,7 @@ class ExpService {
     }
 
     final String address = data['address'];
-    final String date = data['date'].toString();
+    final DateTime date = DateTime.parse(data['date'].toDate().toString());
     final String description = data['description'];
     final int payingMethod = data['payingMethod'];
     final int serviceType = data['serviceType'];
@@ -81,18 +84,6 @@ class ExpService {
     );
   }
 
-  Status convertToStatus(int index) {
-    if (index == Status.sent.index) {
-      return Status.sent;
-    }
-    else if (index == Status.in_progress.index) {
-      return Status.in_progress;
-    }
-    else {
-      return Status.finished;
-    }
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'address': address,
@@ -130,3 +121,24 @@ enum ServiceType {
   plomery,
   budget,
 }
+
+int getServiceTypeIndex(String serviceType) {
+    if (serviceType == Strings.electricity) {
+      return ServiceType.electricity.index;
+    }
+    else if (serviceType == Strings.instalation) {
+      return ServiceType.instalation.index;
+    }
+    else if (serviceType == Strings.misc) {
+      return ServiceType.misc.index;
+    }
+    else if (serviceType == Strings.paint) {
+      return ServiceType.paint.index;
+    }
+    else if (serviceType == Strings.plomber) {
+      return ServiceType.plomery.index;
+    }
+    else {
+      return ServiceType.budget.index;
+    }
+  }

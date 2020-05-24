@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:marinez_demo/models/exp_service.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
-import 'package:marinez_demo/app/screens/home/services_tab_pages/queue_services_page.dart';
+import 'package:marinez_demo/app/screens/home/service_tab_page/queue_services_page.dart';
 import 'package:marinez_demo/services/firestore_service.dart';
 
 class PendingServicesPage extends StatelessWidget {
