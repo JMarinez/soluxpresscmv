@@ -19,7 +19,26 @@ class MenuPage extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             DrawerHeader(
-              child: Text('Hola'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.person,
+                      color: Theme.of(context).primaryColor,
+                      size: 40.0,
+                    ),
+                    backgroundColor: Theme.of(context).accentColor,
+                    radius: 40.0,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text('Juan Jose Mariñez Fernandez'),
+                ],
+              ),
+              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
             ),
             ListTile(
               title: Text('Profile'),
@@ -30,6 +49,15 @@ class MenuPage extends StatelessWidget {
             ListTile(
               title: Text('Log Out'),
               onTap: () async => await firebaseAuth.signOut(),
+            ),
+            Divider(),
+            ListTile(
+              title: Text('Acerca del app'),
+              onTap: () => showAboutDialog(
+                context: context,
+                applicationVersion: '0.1',
+                applicationName: 'Servicios Express',
+              ),
             ),
           ],
         ),

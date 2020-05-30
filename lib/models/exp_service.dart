@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:marinez_demo/constants/strings.dart';
 
 class ExpService {

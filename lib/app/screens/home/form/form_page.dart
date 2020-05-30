@@ -28,7 +28,10 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Fomulario de ${widget.title}')),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Fomulario de ${widget.title}'),
+      ),
       body: Container(
         child: Form(
           key: globalKey,
@@ -43,7 +46,7 @@ class _FormPageState extends State<FormPage> {
                 _buildAttachmentsField(),
                 Padding(
                   padding: const EdgeInsets.only(top: 18.0),
-                  child: _buildSendServiceForm(context),
+                  child: _buildSendServiceButton(context),
                 ),
               ],
             ),
@@ -103,31 +106,59 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
-  Widget _buildSendServiceForm(BuildContext context) {
+  Widget _buildSendServiceButton(BuildContext context) {
     return SubmitButton(
       text: 'Enviar',
       onPressed: () async {
-        final user = Provider.of<User>(context, listen: false);
-        final firestore = Provider.of<FirestoreService>(context, listen: false);
-        final snapshot = await firestore.getUserProfile(user.uid);
-
-        final userProfile = ProfileReference.fromMap(snapshot.data);
-
-        final newService = ExpService(
-          address: userProfile.address,
-          date: DateTime.now(),
-          description: _description.text,
-          payingMethod: initialValue.index,
-          serviceType: getServiceTypeIndex(widget.title),
-          status: Status.sent.index,
-          userEmail: userProfile.email,
-          userFullName: userProfile.displayName,
-          userPhoneNumber: userProfile.phoneNumber,
+        await showDialog(
+          context: context,
+          builder: (context) {
+            return _showAlertDialog(context);
+          },
         );
-
-        await firestore.setService(user.uid, newService);
         Navigator.pop(context);
       },
     );
+  }
+
+  Widget _showAlertDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text('Desea enviar este servicio?'),
+      actions: <Widget>[
+        FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancelar',
+                style: TextStyle(color: Theme.of(context).primaryColor))),
+        FlatButton(
+            onPressed: () async {
+              await _sendService(context);
+            },
+            child: Text('Enviar',
+                style: TextStyle(color: Theme.of(context).primaryColor))),
+      ],
+    );
+  }
+
+  Future _sendService(BuildContext context) async {
+    final user = Provider.of<User>(context, listen: false);
+    final firestore = Provider.of<FirestoreService>(context, listen: false);
+    final snapshot = await firestore.getUserProfile(user.uid);
+
+    final userProfile = ProfileReference.fromMap(snapshot.data);
+
+    final newService = ExpService(
+      address: userProfile.address,
+      date: DateTime.now(),
+      description: _description.text,
+      payingMethod: initialValue.index,
+      serviceType: getServiceTypeIndex(widget.title),
+      status: Status.sent.index,
+      userEmail: userProfile.email,
+      userFullName: userProfile.displayName,
+      userPhoneNumber: userProfile.phoneNumber,
+    );
+
+    await firestore.setService(user.uid, newService);
+    Navigator.pop(context);
   }
 }

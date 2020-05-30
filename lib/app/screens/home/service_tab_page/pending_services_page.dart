@@ -13,7 +13,12 @@ class PendingServicesPage extends StatelessWidget {
     final user = Provider.of<User>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Servicios Pendientes',
+        ),
+      ),
       body: StreamProvider(
         create: (_) => firestore.serviceListStream(user.uid, Status.sent.index),
         child: QueueServicesPage(),

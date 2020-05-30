@@ -10,22 +10,27 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final firestore = Provider.of<FirestoreService>(context);
     final user = Provider.of<User>(context, listen: false);
-    print('User id: ${user.uid}');
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Perfil'),
+      ),
       body: StreamBuilder<ProfileReference>(
         stream: firestore.userProfileStream(user.uid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final profile = snapshot.data;
             if (profile != null) {
-              return Column(
-                children: <Widget>[
-                  FormInput(initialValue: profile.displayName),
-                  FormInput(initialValue: profile.email),
-                  FormInput(initialValue: profile.phoneNumber),
-                  FormInput(initialValue: profile.address),
-                ],
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: Column(
+                  children: <Widget>[
+                    FormInput(initialValue: profile.displayName),
+                    FormInput(initialValue: profile.email),
+                    FormInput(initialValue: profile.phoneNumber),
+                    FormInput(initialValue: profile.address),
+                  ],
+                ),
               );
             }
           }
