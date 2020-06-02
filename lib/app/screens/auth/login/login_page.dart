@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:marinez_demo/app/screens/signup/signup_page.dart';
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/components/submit_button.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
 
 class LoginPage extends StatefulWidget {
+
+  final Function(int) slideToSignupPage;
+
+  LoginPage(this.slideToSignupPage);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -115,12 +119,7 @@ class _LoginPageState extends State<LoginPage> {
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SignupPage(),
-            ),
-          );
+          widget.slideToSignupPage(1);
         });
   }
 }

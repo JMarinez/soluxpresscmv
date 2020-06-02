@@ -1,14 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/components/submit_button.dart';
 import 'package:marinez_demo/models/profile_reference.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
 import 'package:marinez_demo/services/firestore_service.dart';
-import 'package:provider/provider.dart';
 
 class SignupPage extends StatefulWidget {
+  final Function(int) slideToLoginPage;
+
+  SignupPage(this.slideToLoginPage);
+
   @override
   _SignupPageState createState() => _SignupPageState();
 }
@@ -22,7 +25,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController _cnfPass = TextEditingController();
 
   @override
-  void dispose() { 
+  void dispose() {
     _name.dispose();
     _address.dispose();
     _email.dispose();
@@ -34,28 +37,28 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<FirestoreService>(
-      create: (_) => FirestoreService(),
-          child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => widget.slideToLoginPage(0)),
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(36.0),
-                child: Text(
-                  'Servicios Express',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 50.0),
-                ),
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Text(
+                'Servicios Express',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 50.0),
               ),
-              _buildSignupForm(context),
-            ],
-          ),
+            ),
+            _buildSignupForm(context),
+          ],
         ),
       ),
     );
@@ -174,7 +177,7 @@ class _SignupPageState extends State<SignupPage> {
         onPressed: () async {
           if (_pass.text == _cnfPass.text) {
             await createWithEmailAndPassword(context);
-            Navigator.pop(context);
+            widget.slideToLoginPage(0);
           }
         });
   }
@@ -185,7 +188,7 @@ class _SignupPageState extends State<SignupPage> {
           Provider.of<FirebaseAuthService>(context, listen: false);
       final user = await firebaseAuth.createUserWithEmailPassword(
           _email.text, _pass.text);
-      
+
       final firestore = Provider.of<FirestoreService>(context, listen: false);
       await firestore.setUserProfile(
         ProfileReference(
