@@ -6,24 +6,37 @@ class QueueServicesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<ExpService> _serviceList = Provider.of<List<ExpService>>(context);
-    return _serviceList != null
-        ? ListView.builder(
-            itemCount: _serviceList?.length ?? 0,
-            itemBuilder: (_, index) {
-              return Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    child: Icon(Icons.person),
-                  ),
-                  title: Text(_serviceList[index].description),
-                  subtitle: Text(_serviceList[index].userFullName),
-                  trailing: Icon(Icons.arrow_right),
-                ),
-              );
-            },
-          )
-        : Center(
-            child: Text('No hay servicios'),
+
+    if (_serviceList == null) {
+      return Center(
+        child: Text(
+          'No hay servicios en proceso',
+          style: TextStyle(fontSize: 20.0),
+        ),
+      );
+    } else if (_serviceList.isEmpty) {
+      return Center(
+        child: Text(
+          'No hay servicios en proceso',
+          style: TextStyle(fontSize: 20.0),
+        ),
+      );
+    } else {
+      return ListView.builder(
+        itemCount: _serviceList?.length ?? 0,
+        itemBuilder: (_, index) {
+          return Card(
+            child: ListTile(
+              leading: CircleAvatar(
+                child: Icon(Icons.person),
+              ),
+              title: Text(_serviceList[index].description),
+              subtitle: Text(_serviceList[index].userFullName),
+              trailing: Icon(Icons.arrow_right),
+            ),
           );
+        },
+      );
+    }
   }
 }
