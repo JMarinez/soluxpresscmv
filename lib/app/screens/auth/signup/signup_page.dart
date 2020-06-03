@@ -187,7 +187,7 @@ class _SignupPageState extends State<SignupPage> {
       final firebaseAuth =
           Provider.of<FirebaseAuthService>(context, listen: false);
       final user = await firebaseAuth.createUserWithEmailPassword(
-          _email.text, _pass.text);
+          _email.text.trim(), _pass.text);
 
       final firestore = Provider.of<FirestoreService>(context, listen: false);
       await firestore.setUserProfile(
@@ -199,7 +199,6 @@ class _SignupPageState extends State<SignupPage> {
           address: _address.text,
         ),
       );
-      print(user);
     } catch (e) {
       print(e);
     }

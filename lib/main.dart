@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:marinez_demo/app/auth_widget.dart';
-import 'package:marinez_demo/services/firebase_auth_service.dart';
 import 'package:provider/provider.dart';
 
+import 'package:marinez_demo/app/auth_widget.dart';
+import 'package:marinez_demo/services/firebase_auth_service.dart';
+import 'package:marinez_demo/services/firestore_service.dart';
 import 'app/auth_widget_builder.dart';
 
 void main() => runApp(MyApp());
@@ -14,6 +15,9 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<FirebaseAuthService>(
           create: (_) => FirebaseAuthService(),
+        ),
+        Provider<FirestoreService>(
+          create: (_) => FirestoreService(),
         ),
       ],
       child: AuthWidgetBuilder(

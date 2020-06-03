@@ -20,9 +20,11 @@ class _LoginSignupPageViewState extends State<LoginSignupPageView> {
   }
 
   void slideToIndexPage(int index) {
-    _controller.animateToPage(index,
-        duration: Duration(seconds: 1), curve: Curves.ease);
-    _controller.jumpToPage(index);
+    if (_controller.hasClients) {
+      _controller.animateToPage(index,
+          duration: Duration(seconds: 1), curve: Curves.ease);
+      _controller.jumpToPage(index);
+    }
   }
 
   @override
