@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marinez_demo/components/form_input.dart';
@@ -23,6 +24,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController _mobileNumber = TextEditingController();
   TextEditingController _pass = TextEditingController();
   TextEditingController _cnfPass = TextEditingController();
+  bool _loading = false;
 
   @override
   void dispose() {
@@ -37,30 +39,35 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => widget.slideToLoginPage(0)),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(36.0),
-              child: Text(
-                'Servicios Express',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 50.0),
-              ),
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => widget.slideToLoginPage(0)),
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(36.0),
+                  child: Text(
+                    'Servicios Express',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 50.0),
+                  ),
+                ),
+                _buildSignupForm(context),
+              ],
             ),
-            _buildSignupForm(context),
-          ],
+          ),
         ),
-      ),
+        _loading ? LoadingWidget() : Container(),
+      ],
     );
   }
 
@@ -186,6 +193,10 @@ class _SignupPageState extends State<SignupPage> {
     try {
       final firebaseAuth =
           Provider.of<FirebaseAuthService>(context, listen: false);
+
+      setState(() {
+        _loading = true;
+      });
       final user = await firebaseAuth.createUserWithEmailPassword(
           _email.text.trim(), _pass.text);
 
@@ -199,6 +210,10 @@ class _SignupPageState extends State<SignupPage> {
           address: _address.text,
         ),
       );
+
+      setState(() {
+        _loading = true;
+      });
     } catch (e) {
       print(e);
     }

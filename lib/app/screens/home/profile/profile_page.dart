@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/models/profile_reference.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
@@ -35,7 +36,7 @@ class ProfilePage extends StatelessWidget {
             }
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: SpinKitFadingCircle(size: 50.0),
           );
         },
       ),

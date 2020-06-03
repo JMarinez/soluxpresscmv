@@ -15,53 +15,7 @@ class MenuPage extends StatelessWidget {
         Provider.of<FirebaseAuthService>(context, listen: false);
 
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  CircleAvatar(
-                    child: Icon(
-                      Icons.person,
-                      color: Theme.of(context).primaryColor,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Theme.of(context).accentColor,
-                    radius: 40.0,
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text('Juan Jose Mariñez Fernandez'),
-                ],
-              ),
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-            ),
-            ListTile(
-              title: Text('Profile'),
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProfilePage())),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Log Out'),
-              onTap: () async => await firebaseAuth.signOut(),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Acerca del app'),
-              onTap: () => showAboutDialog(
-                context: context,
-                applicationVersion: '0.1',
-                applicationName: 'Servicios Express',
-              ),
-            ),
-          ],
-        ),
-      ),
+      drawer: _buildDrawer(context, firebaseAuth),
       appBar: AppBar(
         title: Text('Servicios Express'),
         centerTitle: true,
@@ -108,6 +62,56 @@ class MenuPage extends StatelessWidget {
     );
   }
 
+  Drawer _buildDrawer(BuildContext context, FirebaseAuthService firebaseAuth) {
+    return Drawer(
+      child: ListView(
+        children: <Widget>[
+          DrawerHeader(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                CircleAvatar(
+                  child: Icon(
+                    Icons.person,
+                    color: Theme.of(context).primaryColor,
+                    size: 40.0,
+                  ),
+                  backgroundColor: Theme.of(context).accentColor,
+                  radius: 40.0,
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Text('Juan Jose Mariñez Fernandez'),
+              ],
+            ),
+            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+          ),
+          ListTile(
+            title: Text('Profile'),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProfilePage())),
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Log Out'),
+            onTap: () async => await firebaseAuth.signOut(),
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Acerca del app'),
+            onTap: () => showAboutDialog(
+              context: context,
+              applicationVersion: '0.1',
+              applicationName: 'Servicios Express',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   GridView getMenuGrid(
       AsyncSnapshot<List<dynamic>> snapshot, BuildContext context) {
     return GridView(
@@ -124,24 +128,25 @@ class MenuPage extends StatelessWidget {
       AsyncSnapshot<List<dynamic>> snapshot, BuildContext context) {
     List<MenuOption> menuList = [];
 
-    snapshot.data.forEach((option) {
-      var temp = MenuOption(
-        title: option['text'],
-        imageData: option['image'],
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FormPage(
-                title: option['text'],
+    snapshot.data.forEach(
+      (option) {
+        var temp = MenuOption(
+          title: option['text'],
+          imageData: option['image'],
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FormPage(
+                  title: option['text'],
+                ),
               ),
-            ),
-          );
-        },
-      );
-      menuList.add(temp);
-    });
-
+            );
+          },
+        );
+        menuList.add(temp);
+      },
+    );
     return menuList;
   }
 }

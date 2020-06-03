@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:marinez_demo/components/loading_widget.dart';
 
 import 'package:marinez_demo/models/exp_service.dart';
 import 'package:marinez_demo/components/form_input.dart';
@@ -25,34 +26,41 @@ class _FormPageState extends State<FormPage> {
 
   Payment initialValue = Payment.cash;
 
+  bool _loading = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Fomulario de ${widget.title}'),
-      ),
-      body: Container(
-        child: Form(
-          key: globalKey,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildServiceTypeField(),
-                _buildServiceDescriptionField(),
-                _buildPaymentMethodField(),
-                _buildAttachmentsField(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 18.0),
-                  child: _buildSendServiceButton(context),
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text('Fomulario de ${widget.title}'),
+          ),
+          body: Container(
+            child: Form(
+              key: globalKey,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildServiceTypeField(),
+                    _buildServiceDescriptionField(),
+                    _buildPaymentMethodField(),
+                    _buildAttachmentsField(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 18.0),
+                      child: _buildSendServiceButton(context),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+        _loading ? LoadingWidget() : Container()
+      ],
     );
   }
 
@@ -142,6 +150,11 @@ class _FormPageState extends State<FormPage> {
   Future _sendService(BuildContext context) async {
     final user = Provider.of<User>(context, listen: false);
     final firestore = Provider.of<FirestoreService>(context, listen: false);
+
+    setState(() {
+      _loading = true;
+    });
+
     final snapshot = await firestore.getUserProfile(user.uid);
 
     final userProfile = ProfileReference.fromMap(snapshot.data);
@@ -159,6 +172,11 @@ class _FormPageState extends State<FormPage> {
     );
 
     await firestore.setService(user.uid, newService);
+
+    setState(() {
+      _loading = true;
+    });
+
     Navigator.pop(context);
   }
 }

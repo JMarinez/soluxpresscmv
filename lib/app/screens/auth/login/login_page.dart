@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marinez_demo/components/form_input.dart';
@@ -6,7 +7,6 @@ import 'package:marinez_demo/components/submit_button.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
 
 class LoginPage extends StatefulWidget {
-
   final Function(int) slideToSignupPage;
 
   LoginPage(this.slideToSignupPage);
@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _password = TextEditingController();
   final FocusNode _focusEmailNode = FocusNode();
   final FocusNode _focusPasswordNode = FocusNode();
+  bool _loading = false;
 
   @override
   void dispose() {
@@ -32,30 +33,35 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(36.0),
-                child: Text(
-                  'Servicios Express',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 50.0),
-                ),
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(36.0),
+                    child: Text(
+                      'Servicios Express',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 50.0),
+                    ),
+                  ),
+                  _buildLoginForm(context),
+                  Padding(
+                    padding: EdgeInsets.only(top: 50.0),
+                    child: _buildSignupPagePush(context),
+                  ),
+                ],
               ),
-              _buildLoginForm(context),
-              Padding(
-                padding: EdgeInsets.only(top: 50.0),
-                child: _buildSignupPagePush(context),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
+        _loading ? LoadingWidget() : Container()
+      ],
     );
   }
 
@@ -76,16 +82,29 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildLoginButton(BuildContext context) {
     return SubmitButton(
-        text: 'Log in',
-        onPressed: () async {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-          final firebaseAuth = Provider.of<FirebaseAuthService>(context, listen: false);
-          await firebaseAuth.signInWithEmailAndPassword(_email.text, _password.text);
+      text: 'Log in',
+      onPressed: () async {
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+
+        final firebaseAuth =
+            Provider.of<FirebaseAuthService>(context, listen: false);
+
+        setState(() {
+          _loading = true;
         });
+
+        await firebaseAuth.signInWithEmailAndPassword(
+            _email.text, _password.text);
+
+        setState(() {
+          _loading = false;
+        });
+      },
+    );
   }
 
   Widget _buildEmailField() {
