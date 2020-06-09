@@ -28,6 +28,8 @@ class FirebaseAuthService {
 
     return User(
       uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
     );
   }
 
@@ -41,9 +43,12 @@ class FirebaseAuthService {
     return _userFromFirebase(authResult.user);
   }
 
-  Future<User> createUserWithEmailPassword(String email, String password) async {
-    final AuthResult authResult = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<User> createUserWithEmailPassword(
+      String email, String password, String displayName) async {
+    final AuthResult authResult = await _firebaseAuth
+        .createUserWithEmailAndPassword(email: email, password: password);
     try {
+      //await updateUserDisplayName(displayName, authResult.user);
       // await authResult.user.sendEmailVerification();
     } catch (e) {
       print(e);
@@ -56,15 +61,16 @@ class FirebaseAuthService {
     return _userFromFirebase(user);
   }
 
-  Future updateUserDisplayName(String displayName) async {
-    final FirebaseUser user = await _firebaseAuth.currentUser();
+  //TODO: Futura implementacion
+  Future updateUserDisplayName(String displayName, FirebaseUser user) async {
     final userInfo = UserUpdateInfo();
     userInfo.displayName = displayName;
-    // userInfo.photoUrl = photoUrl;
-    user.updateProfile(userInfo);
+    await user.updateProfile(userInfo);
+    await user.reload();
+    print(user.displayName);
   }
 
-  Future signOut() {
-    return _firebaseAuth.signOut();
+  Future signOut() async {
+    return await _firebaseAuth.signOut();
   }
 }

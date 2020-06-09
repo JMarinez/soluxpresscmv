@@ -66,25 +66,25 @@ class _MenuPageState extends State<MenuPage> {
               return getMenuGrid(snapshot, context);
             },
           ),
-          bottomNavigationBar: BottomAppBar(
-            child: Container(
-              height: 50.0,
-            ),
-          ),
-          floatingActionButton: Container(
-            child: Center(
-                child: FaIcon(
-              FontAwesomeIcons.ambulance,
-              color: Theme.of(context).primaryColor,
-            )),
-            decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.circular(100.0)),
-            height: 75.0,
-            width: 75.0,
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          // bottomNavigationBar: BottomAppBar(
+          //   child: Container(
+          //     height: 50.0,
+          //   ),
+          // ),
+          // floatingActionButton: Container(
+          //   child: Center(
+          //       child: FaIcon(
+          //     FontAwesomeIcons.ambulance,
+          //     color: Theme.of(context).primaryColor,
+          //   )),
+          //   decoration: BoxDecoration(
+          //       color: Theme.of(context).accentColor,
+          //       borderRadius: BorderRadius.circular(100.0)),
+          //   height: 75.0,
+          //   width: 75.0,
+          // ),
+          // floatingActionButtonLocation:
+          //     FloatingActionButtonLocation.centerDocked,
         ),
         _loading ? LoadingWidget() : Container()
       ],
@@ -113,7 +113,7 @@ class _MenuPageState extends State<MenuPage> {
                 SizedBox(
                   height: 10.0,
                 ),
-                Text('user.displayName'),
+                Text(user.uid),
               ],
             ),
             decoration: BoxDecoration(color: Theme.of(context).primaryColor),

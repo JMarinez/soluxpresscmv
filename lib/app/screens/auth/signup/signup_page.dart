@@ -199,22 +199,19 @@ class _SignupPageState extends State<SignupPage> {
       });
 
       final user = await firebaseAuth.createUserWithEmailPassword(
-          _email.text.trim(), _pass.text);
+          _email.text.trim(), _pass.text, _name.text.trim());
 
       final firestore = Provider.of<FirestoreService>(context, listen: false);
 
       await firestore.setUserProfile(
         ProfileReference(
           userUid: user.uid,
-          email: _email.text,
+          email: _email.text.trim(),
           displayName: _name.text.trim(),
           phoneNumber: _mobileNumber.text.trim(),
           address: _address.text,
         ),
       );
-
-      //TODO: Revisar porque no funciona
-      await firebaseAuth.updateUserDisplayName(_name.text.trim());
 
       setState(() {
         _loading = true;
