@@ -8,6 +8,10 @@ class Strings {
   static const String plomber = 'Plomeria';
   static const String budget = 'Presupuesto';
 
+  static const String sent = 'Enviado';
+  static const String inProgress = 'En progreso';
+  static const String finished = 'Finalizado';
+
 
 
 }

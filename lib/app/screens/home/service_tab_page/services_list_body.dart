@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:marinez_demo/app/screens/home/service_tab_page/service_detail_page.dart';
 import 'package:marinez_demo/models/exp_service.dart';
 import 'package:provider/provider.dart';
 
-class QueueServicesPage extends StatelessWidget {
+class ServicesListBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<ExpService> _serviceList = Provider.of<List<ExpService>>(context);
@@ -33,6 +34,14 @@ class QueueServicesPage extends StatelessWidget {
               title: Text(_serviceList[index].description),
               subtitle: Text(_serviceList[index].userFullName),
               trailing: Icon(Icons.arrow_right),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ServiceDetailPage(_serviceList[index]);
+                  },
+                ),
+              ),
             ),
           );
         },

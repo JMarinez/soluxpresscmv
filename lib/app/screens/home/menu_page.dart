@@ -1,68 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marinez_demo/app/screens/home/form/form_page.dart';
 import 'package:marinez_demo/app/screens/home/service_tab_page/pending_services_page.dart';
 import 'package:marinez_demo/app/screens/home/profile/profile_page.dart';
+import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
 import 'package:marinez_demo/services/menu_provider.dart';
 import 'package:marinez_demo/components/menu_option.dart';
 import 'package:provider/provider.dart';
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
+  @override
+  _MenuPageState createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  bool _loading = false;
+
   @override
   Widget build(BuildContext context) {
     final firebaseAuth =
         Provider.of<FirebaseAuthService>(context, listen: false);
 
-    return Scaffold(
-      drawer: _buildDrawer(context, firebaseAuth),
-      appBar: AppBar(
-        title: Text('Servicios Express'),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.inbox,
-              color: Colors.black,
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          drawer: _buildDrawer(context, firebaseAuth),
+          appBar: AppBar(
+            title: Text('Servicios Express'),
+            centerTitle: true,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.inbox,
+                  color: Colors.black,
+                ),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PendingServicesPage(),
+                  ),
+                ),
+              )
+            ],
+          ),
+          body: FutureBuilder(
+            future: menuProvider.getData(),
+            initialData: [],
+            builder:
+                (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Column(
+                    children: <Widget>[
+                      SpinKitFadingCircle(
+                        color: Theme.of(context).accentColor,
+                        size: 50.0,
+                      ),
+                      Text('Cargando')
+                    ],
+                  ),
+                );
+              }
+              return getMenuGrid(snapshot, context);
+            },
+          ),
+          bottomNavigationBar: BottomAppBar(
+            child: Container(
+              height: 50.0,
             ),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PendingServicesPage(),
-              ),
-            ),
-          )
-        ],
-      ),
-      body: FutureBuilder(
-        future: menuProvider.getData(),
-        initialData: [],
-        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-          return getMenuGrid(snapshot, context);
-        },
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          height: 50.0,
+          ),
+          floatingActionButton: Container(
+            child: Center(
+                child: FaIcon(
+              FontAwesomeIcons.ambulance,
+              color: Theme.of(context).primaryColor,
+            )),
+            decoration: BoxDecoration(
+                color: Theme.of(context).accentColor,
+                borderRadius: BorderRadius.circular(100.0)),
+            height: 75.0,
+            width: 75.0,
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         ),
-      ),
-      floatingActionButton: Container(
-        child: Center(
-            child: FaIcon(
-          FontAwesomeIcons.ambulance,
-          color: Theme.of(context).primaryColor,
-        )),
-        decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
-            borderRadius: BorderRadius.circular(100.0)),
-        height: 75.0,
-        width: 75.0,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        _loading ? LoadingWidget() : Container()
+      ],
     );
   }
 
   Drawer _buildDrawer(BuildContext context, FirebaseAuthService firebaseAuth) {
+    final user = Provider.of<User>(context, listen: false);
     return Drawer(
       child: ListView(
         children: <Widget>[
@@ -83,7 +113,7 @@ class MenuPage extends StatelessWidget {
                 SizedBox(
                   height: 10.0,
                 ),
-                Text('Juan Jose Mariñez Fernandez'),
+                Text('user.displayName'),
               ],
             ),
             decoration: BoxDecoration(color: Theme.of(context).primaryColor),
@@ -96,7 +126,7 @@ class MenuPage extends StatelessWidget {
           Divider(),
           ListTile(
             title: Text('Log Out'),
-            onTap: () async => await firebaseAuth.signOut(),
+            onTap: () async => await handleSignOut(firebaseAuth),
           ),
           Divider(),
           ListTile(
@@ -110,6 +140,18 @@ class MenuPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future handleSignOut(FirebaseAuthService firebaseAuth) async {
+    setState(() {
+      _loading = true;
+    });
+
+    await firebaseAuth.signOut();
+
+    setState(() {
+      _loading = false;
+    });
   }
 
   GridView getMenuGrid(

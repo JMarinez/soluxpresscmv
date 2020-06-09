@@ -27,6 +27,32 @@ class ExpService {
     this.date,
   });
 
+  String getServiceTypeDescription(int serviceType) {
+    if (serviceType == ServiceType.electricity.index) {
+      return Strings.electricity;
+    } else if (serviceType == ServiceType.instalation.index) {
+      return Strings.instalation;
+    } else if (serviceType == ServiceType.misc.index) {
+      return Strings.misc;
+    } else if (serviceType == ServiceType.paint.index) {
+      return Strings.paint;
+    } else if (serviceType == ServiceType.plomery.index) {
+      return Strings.plomber;
+    } else {
+      return Strings.budget;
+    }
+  }
+
+  String getStatusDescription(int status) {
+    if (status == Status.sent.index) {
+      return Strings.sent;
+    } else if (status == Status.in_progress.index) {
+      return Strings.inProgress;
+    } else {
+      return Strings.finished;
+    }
+  }
+
   factory ExpService.fromMap(Map<String, dynamic> data) {
     if (data == null) {
       return null;
@@ -90,13 +116,29 @@ class ExpService {
       'description': description,
       'payingMethod': payingMethod,
       'serviceType': serviceType,
-      'status' : status,
+      'status': status,
       'userEmail': userEmail,
       'userFullName': userFullName,
       'userPhoneNumber': userPhoneNumber,
     };
   }
 }
+
+int getServiceTypeIndex(String serviceType) {
+    if (serviceType == Strings.electricity) {
+      return ServiceType.electricity.index;
+    } else if (serviceType == Strings.instalation) {
+      return ServiceType.instalation.index;
+    } else if (serviceType == Strings.misc) {
+      return ServiceType.misc.index;
+    } else if (serviceType == Strings.paint) {
+      return ServiceType.paint.index;
+    } else if (serviceType == Strings.plomber) {
+      return ServiceType.plomery.index;
+    } else {
+      return ServiceType.budget.index;
+    }
+  }
 
 enum Status {
   none,
@@ -120,24 +162,3 @@ enum ServiceType {
   plomery,
   budget,
 }
-
-int getServiceTypeIndex(String serviceType) {
-    if (serviceType == Strings.electricity) {
-      return ServiceType.electricity.index;
-    }
-    else if (serviceType == Strings.instalation) {
-      return ServiceType.instalation.index;
-    }
-    else if (serviceType == Strings.misc) {
-      return ServiceType.misc.index;
-    }
-    else if (serviceType == Strings.paint) {
-      return ServiceType.paint.index;
-    }
-    else if (serviceType == Strings.plomber) {
-      return ServiceType.plomery.index;
-    }
-    else {
-      return ServiceType.budget.index;
-    }
-  }
