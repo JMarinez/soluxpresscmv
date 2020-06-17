@@ -96,7 +96,7 @@ class _MenuPageState extends State<MenuPage> {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          DrawerHeader(
+          /*DrawerHeader(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -117,6 +117,18 @@ class _MenuPageState extends State<MenuPage> {
               ],
             ),
             decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+          ),*/
+          UserAccountsDrawerHeader(
+            accountName: Text('Juan Mariñez'),
+            accountEmail: Text('juan.dsmarinez@gmail.com'),
+            currentAccountPicture: CircleAvatar(
+              child: Icon(
+                Icons.person,
+                size: 50.0,
+                color: Theme.of(context).primaryColor,
+              ),
+              backgroundColor: Theme.of(context).accentColor,
+            ),
           ),
           ListTile(
             title: Text('Profile'),
