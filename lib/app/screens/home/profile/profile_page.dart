@@ -1,17 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/constants/constants.dart';
 import 'package:marinez_demo/models/profile_reference.dart';
-import 'package:marinez_demo/services/firebase_auth_service.dart';
 import 'package:marinez_demo/services/firestore_service.dart';
-import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firestore = Provider.of<FirestoreService>(context);
-    final user = Provider.of<User>(context, listen: false);
+    final user = Provider.of<FirebaseUser>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

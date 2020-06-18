@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -52,39 +53,12 @@ class _MenuPageState extends State<MenuPage> {
                 (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
-                  child: Column(
-                    children: <Widget>[
-                      SpinKitFadingCircle(
-                        color: Theme.of(context).accentColor,
-                        size: 50.0,
-                      ),
-                      Text('Cargando')
-                    ],
-                  ),
+                  child: LoadingWidget()
                 );
               }
               return getMenuGrid(snapshot, context);
             },
           ),
-          // bottomNavigationBar: BottomAppBar(
-          //   child: Container(
-          //     height: 50.0,
-          //   ),
-          // ),
-          // floatingActionButton: Container(
-          //   child: Center(
-          //       child: FaIcon(
-          //     FontAwesomeIcons.ambulance,
-          //     color: Theme.of(context).primaryColor,
-          //   )),
-          //   decoration: BoxDecoration(
-          //       color: Theme.of(context).accentColor,
-          //       borderRadius: BorderRadius.circular(100.0)),
-          //   height: 75.0,
-          //   width: 75.0,
-          // ),
-          // floatingActionButtonLocation:
-          //     FloatingActionButtonLocation.centerDocked,
         ),
         _loading ? LoadingWidget() : Container()
       ],
@@ -92,35 +66,14 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Drawer _buildDrawer(BuildContext context, FirebaseAuthService firebaseAuth) {
-    final user = Provider.of<User>(context, listen: false);
+    final user = Provider.of<FirebaseUser>(context, listen: false);
+
     return Drawer(
       child: ListView(
         children: <Widget>[
-          /*DrawerHeader(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                CircleAvatar(
-                  child: Icon(
-                    Icons.person,
-                    color: Theme.of(context).primaryColor,
-                    size: 40.0,
-                  ),
-                  backgroundColor: Theme.of(context).accentColor,
-                  radius: 40.0,
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Text(user.uid),
-              ],
-            ),
-            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-          ),*/
           UserAccountsDrawerHeader(
-            accountName: Text('Juan Mariñez'),
-            accountEmail: Text('juan.dsmarinez@gmail.com'),
+            accountName: Text(user.displayName),
+            accountEmail: Text(user.email),
             currentAccountPicture: CircleAvatar(
               child: Icon(
                 Icons.person,

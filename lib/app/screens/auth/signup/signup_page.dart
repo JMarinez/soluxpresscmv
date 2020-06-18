@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:provider/provider.dart';
@@ -190,36 +191,41 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Future createWithEmailAndPassword(BuildContext context) async {
+    setState(() {
+      _loading = true;
+    });
+
     try {
+      final firestore = Provider.of<FirestoreService>(context, listen: false);
       final firebaseAuth =
           Provider.of<FirebaseAuthService>(context, listen: false);
 
+      final userInfo = UserUpdateInfo();
+      userInfo.displayName = _name.text.trim();
+
+      await firebaseAuth
+          .createUserWithEmailPassword(
+              _email.text.trim(), _pass.text, _name.text.trim())
+          .then((user) async {
+        await user.updateProfile(userInfo);
+        await user.reload();
+
+        await firestore.setUserProfile(
+          ProfileReference(
+            userUid: user.uid,
+            email: _email.text.trim(),
+            displayName: _name.text.trim(),
+            phoneNumber: _mobileNumber.text.trim(),
+            address: _address.text,
+          ),
+        );
+      });
+
       setState(() {
         _loading = true;
       });
-
-      final user = await firebaseAuth.createUserWithEmailPassword(
-          _email.text.trim(), _pass.text, _name.text.trim());
-
-      final firestore = Provider.of<FirestoreService>(context, listen: false);
-
-      await firestore.setUserProfile(
-        ProfileReference(
-          userUid: user.uid,
-          email: _email.text.trim(),
-          displayName: _name.text.trim(),
-          phoneNumber: _mobileNumber.text.trim(),
-          address: _address.text,
-        ),
-      );
-
-      setState(() {
-        _loading = true;
-      });
-      
     } catch (e) {
       print(e);
     }
   }
 }
- 

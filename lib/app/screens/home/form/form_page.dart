@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:marinez_demo/components/loading_widget.dart';
 
@@ -147,7 +148,7 @@ class _FormPageState extends State<FormPage> {
   }
 
   Future _sendService(BuildContext context) async {
-    final user = Provider.of<User>(context, listen: false);
+    final user = Provider.of<FirebaseUser>(context, listen: false);
     final firestore = Provider.of<FirestoreService>(context, listen: false);
 
     setState(() {
