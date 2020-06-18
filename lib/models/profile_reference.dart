@@ -1,5 +1,6 @@
 class ProfileReference {
   final String userUid;
+  final String role;
   final String email;
   final String displayName;
   final String phoneNumber;
@@ -7,6 +8,7 @@ class ProfileReference {
 
   ProfileReference({
     this.userUid,
+    this.role,
     this.email,
     this.displayName,
     this.phoneNumber,

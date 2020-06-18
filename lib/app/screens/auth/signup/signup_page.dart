@@ -213,6 +213,7 @@ class _SignupPageState extends State<SignupPage> {
         await firestore.setUserProfile(
           ProfileReference(
             userUid: user.uid,
+            role: 'user',
             email: _email.text.trim(),
             displayName: _name.text.trim(),
             phoneNumber: _mobileNumber.text.trim(),
