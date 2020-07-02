@@ -21,11 +21,15 @@ class ProfileReference {
     }
 
     final String email = data['email'];
+    final String role = data['role'];
     final String displayName = data['displayName'];
     final String phoneNumber = data['phoneNumber'];
     final String address = data['address'];
 
     if (email == null) {
+      return null;
+    }
+    if (role == null) {
       return null;
     }
     if (displayName == null) {
@@ -40,6 +44,7 @@ class ProfileReference {
 
     return ProfileReference(
       email: email,
+      role: role,
       displayName: displayName,
       phoneNumber: phoneNumber,
       address: address,
@@ -49,6 +54,7 @@ class ProfileReference {
   Map<String, dynamic> toMap() {
     return {
       'email': email,
+      'role': role,
       'displayName': displayName,
       'phoneNumber': phoneNumber,
       'address': address,

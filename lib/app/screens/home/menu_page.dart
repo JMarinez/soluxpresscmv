@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marinez_demo/app/screens/home/form/form_page.dart';
 import 'package:marinez_demo/app/screens/home/service_tab_page/pending_services_page.dart';
 import 'package:marinez_demo/app/screens/home/profile/profile_page.dart';
@@ -72,7 +70,7 @@ class _MenuPageState extends State<MenuPage> {
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text(user.displayName),
+            accountName: Text(user.displayName ?? 'Nombre'),
             accountEmail: Text(user.email),
             currentAccountPicture: CircleAvatar(
               child: Icon(

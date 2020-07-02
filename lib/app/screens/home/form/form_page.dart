@@ -155,7 +155,7 @@ class _FormPageState extends State<FormPage> {
       _loading = true;
     });
 
-    final snapshot = await firestore.getUserProfile(user.uid);
+    final snapshot = await firestore.getUserProfile(user);
 
     final userProfile = ProfileReference.fromMap(snapshot.data);
 

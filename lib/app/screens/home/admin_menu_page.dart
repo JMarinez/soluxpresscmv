@@ -26,7 +26,9 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
             title: Text('Servicios Express'),
             centerTitle: true,
           ),
-          body: Container(),
+          body: Container(
+            child: Center(child: Text('Admin Page')),
+          ),
         ),
         _loading ? LoadingWidget() : Container()
       ],
