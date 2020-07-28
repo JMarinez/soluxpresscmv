@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
-import 'package:marinez_demo/models/exp_service.dart';
 import 'package:provider/provider.dart';
 
-import 'service_tab_page/service_detail_page.dart';
 
-class ServicesListBody extends StatelessWidget {
+import 'package:marinez_demo/models/exp_service.dart';
+import 'master_service_detail_page.dart';
+
+class MasterServicesListBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<ExpService> _serviceList = Provider.of<List<ExpService>>(context);
@@ -40,7 +40,7 @@ class ServicesListBody extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return ServiceDetailPage(_serviceList[index]);
+                    return MasterServiceDetailPage(_serviceList[index]);
                   },
                 ),
               ),

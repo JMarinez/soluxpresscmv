@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:marinez_demo/services/firestore_service.dart';
 import 'package:marinez_demo/models/exp_service.dart';
-import '../services_list_body.dart';
+import '../service_tab_page/services_list_body.dart';
 
 class MasterServicePage extends StatelessWidget {
 
