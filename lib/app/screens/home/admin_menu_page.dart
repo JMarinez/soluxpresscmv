@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:marinez_demo/app/screens/home/master_service/master_service_page.dart';
 import 'package:marinez_demo/app/screens/home/profile/profile_page.dart';
 import 'package:marinez_demo/components/loading_widget.dart';
+import 'package:marinez_demo/components/menu_option.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
+import 'package:marinez_demo/services/menu_provider.dart';
 import 'package:provider/provider.dart';
 
 class AdminMenuPage extends StatefulWidget {
@@ -26,8 +29,18 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
             title: Text('Servicios Express'),
             centerTitle: true,
           ),
-          body: Container(
-            child: Center(child: Text('Admin Page')),
+          body: FutureBuilder(
+            future: menuProvider.getData(),
+            initialData: [],
+            builder:
+                (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: LoadingWidget()
+                );
+              }
+              return getMenuGrid(snapshot, context);
+            },
           ),
         ),
         _loading ? LoadingWidget() : Container()
@@ -87,5 +100,41 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     setState(() {
       _loading = false;
     });
+  }
+
+  GridView getMenuGrid(
+      AsyncSnapshot<List<dynamic>> snapshot, BuildContext context) {
+    return GridView(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 20.0,
+      ),
+      padding: EdgeInsets.all(25),
+      children: getMenuOptions(snapshot, context),
+    );
+  }
+
+  List<Widget> getMenuOptions(
+      AsyncSnapshot<List<dynamic>> snapshot, BuildContext context) {
+    List<MenuOption> menuList = [];
+
+    snapshot.data.forEach(
+      (option) {
+        var temp = MenuOption(
+          title: option['text'],
+          imageData: option['image'],
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MasterServicePage(title: option['text'])
+              ),
+            );
+          },
+        );
+        menuList.add(temp);
+      },
+    );
+    return menuList;
   }
 }

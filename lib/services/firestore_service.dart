@@ -84,6 +84,17 @@ class FirestoreService {
     return data;
   }
 
+  Stream<List<ExpService>> masterServiceListStream(int serviceType) {
+    final reference = Firestore.instance
+        .collectionGroup('services')
+        .where('serviceType', isEqualTo: serviceType);
+    final data = reference.snapshots().map((snapshot) => snapshot.documents
+        .map((document) => ExpService.fromMap(document.data))
+        .toList());
+    print(data);
+    return data;
+  }
+
   Stream<ExpService> serviceDetailStream(String userUid, String serviceUid) {
     final path = FirestorePath.service(userUid, serviceUid);
     final reference = Firestore.instance.document(path);

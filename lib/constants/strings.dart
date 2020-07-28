@@ -2,9 +2,9 @@
 
 class Strings {
   static const String electricity = 'Electricidad';
-  static const String instalation = 'Instalacion';
-  static const String misc = 'Miscelaneaos';
-  static const String paint = 'Paint';
+  static const String instalation = 'Instalaciones';
+  static const String misc = 'Miscelaneos';
+  static const String paint = 'Pintura';
   static const String plomber = 'Plomeria';
   static const String budget = 'Presupuesto';
 

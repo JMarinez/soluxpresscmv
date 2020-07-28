@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:marinez_demo/components/loading_widget.dart';
+import 'package:provider/provider.dart';
 
+import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:marinez_demo/models/exp_service.dart';
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/components/submit_button.dart';
 import 'package:marinez_demo/models/profile_reference.dart';
-import 'package:marinez_demo/services/firebase_auth_service.dart';
 import 'package:marinez_demo/services/firestore_service.dart';
-import 'package:provider/provider.dart';
 
 class FormPage extends StatefulWidget {
   final String title;

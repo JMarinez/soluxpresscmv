@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                 Provider.of<FirebaseAuthService>(context, listen: false);
 
             await firebaseAuth.signInWithEmailAndPassword(
-                _email.text, _password.text);
+                _email.text.trim(), _password.text);
           }
         } catch (e) {
           setState(() {

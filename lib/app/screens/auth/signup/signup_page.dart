@@ -19,6 +19,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final formKey = GlobalKey<FormState>();
   TextEditingController _name = TextEditingController();
   TextEditingController _address = TextEditingController();
   TextEditingController _email = TextEditingController();
@@ -76,6 +77,7 @@ class _SignupPageState extends State<SignupPage> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Form(
+        key: formKey,
         child: Column(
           children: <Widget>[
             Padding(
@@ -126,68 +128,128 @@ class _SignupPageState extends State<SignupPage> {
 
   Widget _buildNameField() {
     return FormInput(
-        controller: _name,
-        hintText: 'Nombre completo',
-        prefixIcon: Icon(Icons.person));
+      controller: _name,
+      hintText: 'Nombre completo',
+      prefixIcon: Icon(Icons.person),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor ingrese su nombre';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildMobileNumberField() {
     return FormInput(
-        controller: _mobileNumber,
-        hintText: 'Numero movil',
-        prefixIcon: Icon(Icons.phone_android));
+      controller: _mobileNumber,
+      hintText: 'Numero movil',
+      prefixIcon: Icon(Icons.phone_android),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor ingrese su numero movil';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildPhoneNumberField() {
     return FormInput(
-        hintText: 'Numero residencial (opcional)',
-        prefixIcon: Icon(Icons.phone));
+      hintText: 'Numero residencial (opcional)',
+      prefixIcon: Icon(Icons.phone),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor ingrese su numero telefonico';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildAddressField() {
     return FormInput(
-        controller: _address,
-        hintText: 'Direccion',
-        prefixIcon: Icon(Icons.map));
+      controller: _address,
+      hintText: 'Direccion',
+      prefixIcon: Icon(Icons.map),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor ingrese su direccion';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildAddressRefField() {
     return FormInput(
-        hintText: 'Referencia (opcional)', prefixIcon: Icon(Icons.location_on));
+      hintText: 'Referencia (opcional)',
+      prefixIcon: Icon(Icons.location_on),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor ingrese su direccion de referencia';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildEmailField() {
     return FormInput(
-        controller: _email,
-        hintText: 'Email',
-        prefixIcon: Icon(Icons.mail_outline));
+      controller: _email,
+      hintText: 'Email',
+      prefixIcon: Icon(Icons.mail_outline),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor ingrese su correo electronico';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildPasswordField() {
     return FormInput(
-        controller: _pass,
-        obscureText: true,
-        hintText: 'Contraseña',
-        prefixIcon: Icon(Icons.lock));
+      controller: _pass,
+      obscureText: true,
+      hintText: 'Contraseña',
+      prefixIcon: Icon(Icons.lock),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor ingrese su contraseña';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildConfirmPasswordField() {
     return FormInput(
-        controller: _cnfPass,
-        obscureText: true,
-        hintText: 'Confirmar Contraseña',
-        prefixIcon: Icon(Icons.lock_open));
+      controller: _cnfPass,
+      obscureText: true,
+      hintText: 'Confirmar Contraseña',
+      prefixIcon: Icon(Icons.lock_open),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor confirme su contraseña';
+        } else if (_pass.text != _cnfPass.text) {
+          return 'La contraseña no coincide, intente de nuevo';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildSignupButton(BuildContext context) {
     return SubmitButton(
-        text: 'Registrar',
-        onPressed: () async {
-          if (_pass.text == _cnfPass.text) {
-            await createWithEmailAndPassword(context);
-            widget.slideToLoginPage(0);
-          }
-        });
+      text: 'Registrar',
+      onPressed: () async {
+        if (formKey.currentState.validate()) {
+          await createWithEmailAndPassword(context);
+          widget.slideToLoginPage(0);
+        }
+      },
+    );
   }
 
   Future createWithEmailAndPassword(BuildContext context) async {
