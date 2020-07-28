@@ -27,10 +27,10 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: AuthWidget(userSnapshot: userSnapshot),
             theme: ThemeData(
-              primaryColor: Color(0xff48C3B1),
-              accentColor: Color(0xff777779),
-              buttonColor: Color(0xff777779),
-              cursorColor: Color(0xff48C3B1),
+              primaryColor: Color(0xffffb81e),
+              accentColor: Color(0xff55595f),
+              buttonColor: Color(0xff55595f),
+              cursorColor: Color(0xfffbfef3),
             ),
           );
         },

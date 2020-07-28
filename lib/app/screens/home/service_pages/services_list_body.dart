@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:marinez_demo/app/screens/home/service_tab_page/service_detail_page.dart';
+
 import 'package:marinez_demo/models/exp_service.dart';
 import 'package:provider/provider.dart';
+
+import 'service_tab_page/service_detail_page.dart';
 
 class ServicesListBody extends StatelessWidget {
   @override
