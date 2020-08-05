@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'package:marinez_demo/services/firestore_service.dart';
 import 'package:marinez_demo/models/exp_service.dart';
-import '../service_tab_page/services_list_body.dart';
+
+import 'master_services_list_body.dart';
 
 class MasterServicePage extends StatelessWidget {
 
@@ -25,7 +26,7 @@ class MasterServicePage extends StatelessWidget {
       ),
       body: StreamProvider(
         create: (_) => firestore.masterServiceListStream(serviceType),
-        child: ServicesListBody(),
+        child: MasterServicesListBody(),
       ),
     );
   }

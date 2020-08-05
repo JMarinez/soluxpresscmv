@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart'; //For creating the SMTP Server
 
 import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:marinez_demo/models/exp_service.dart';
@@ -150,6 +152,9 @@ class _FormPageState extends State<FormPage> {
     final user = Provider.of<FirebaseUser>(context, listen: false);
     final firestore = Provider.of<FirestoreService>(context, listen: false);
 
+    final String hello = user.uid;
+    print(hello);
+
     setState(() {
       _loading = true;
     });
@@ -165,12 +170,34 @@ class _FormPageState extends State<FormPage> {
       payingMethod: initialValue.index,
       serviceType: getServiceTypeIndex(widget.title),
       status: Status.sent.index,
+      userUid: user.uid,
       userEmail: userProfile.email,
       userFullName: userProfile.displayName,
       userPhoneNumber: userProfile.phoneNumber,
     );
 
     await firestore.setService(user.uid, newService);
+
+  //   String username = "pepsua47@gmail.com";
+  //   String password = "modapalafoka3";
+
+  //   final smtpServer = gmail(username, password); 
+  //   // Creating the Gmail server
+
+  // // Create our email message.
+  //   final message = Message()
+  //     ..from = Address(username)
+  //     ..recipients.add('dest@example.com') //recipent email
+  //     ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}' //subject of the email
+  //     ..text = 'This is the plain text.\nThis is line 2 of the text part.' ;//body of the email
+
+  //   try {
+  //     final sendReport = await send(message, smtpServer);
+  //     print('Message sent: ' + sendReport.toString()); //print if the email is sent
+  //   } on MailerException catch (e) {
+  //     print('Message not sent. \n'+ e.toString()); //print if the email is not sent
+  //     // e.toString() will show why the email is not sending
+  //   }
 
     setState(() {
       _loading = true;
