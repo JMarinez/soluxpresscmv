@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:marinez_demo/models/exp_service.dart';
 import 'package:marinez_demo/services/firestore_service.dart';
 import 'services_list_body.dart';
 
@@ -20,7 +19,7 @@ class PendingServicesPage extends StatelessWidget {
         ),
       ),
       body: StreamProvider(
-        create: (_) => firestore.serviceListStream(user.uid, Status.sent.index),
+        create: (_) => firestore.serviceListStream(user.uid),
         child: ServicesListBody(),
       ),
     );

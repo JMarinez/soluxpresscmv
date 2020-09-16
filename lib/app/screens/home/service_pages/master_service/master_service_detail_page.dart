@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:marinez_demo/components/form_input.dart';
 import 'package:marinez_demo/constants/constants.dart';
 import 'package:marinez_demo/models/exp_service.dart';
 import 'package:marinez_demo/services/firestore_service.dart';
-import 'package:provider/provider.dart';
 
 class MasterServiceDetailPage extends StatefulWidget {
   final ExpService service;
@@ -17,12 +17,12 @@ class MasterServiceDetailPage extends StatefulWidget {
 }
 
 class _MasterServiceDetailPageState extends State<MasterServiceDetailPage> {
-  double value = 1;
-
   @override
   Widget build(BuildContext context) {
 
     final firestore = Provider.of<FirestoreService>(context);
+    double value = widget.service.status.toDouble();
+    String statusDesc = widget.service.getStatusDescription(widget.service.status);
 
     return Scaffold(
       appBar: AppBar(),
@@ -45,7 +45,7 @@ class _MasterServiceDetailPageState extends State<MasterServiceDetailPage> {
             Text('Status', style: kForumInputHeaderSize),
             FormInput(
               initialValue:
-                  widget.service.getStatusDescription(widget.service.status),
+                 statusDesc,
               readOnly: true,
             ),
             Text('Nombre', style: kForumInputHeaderSize),
@@ -77,6 +77,7 @@ class _MasterServiceDetailPageState extends State<MasterServiceDetailPage> {
               onChanged: (newValue) async {
                 setState(() {
                   value = newValue;
+                  statusDesc = widget.service.getStatusDescription(newValue.toInt());
                 });
                 await firestore.updateServiceStatus(widget.service, newValue);
               },

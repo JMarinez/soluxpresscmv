@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart'; //For creating the SMTP Server
 
 import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:marinez_demo/models/exp_service.dart';
@@ -46,13 +44,28 @@ class _FormPageState extends State<FormPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    _buildServiceTypeField(),
-                    _buildServiceDescriptionField(),
-                    _buildPaymentMethodField(),
-                    _buildAttachmentsField(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 18.0),
-                      child: _buildSendServiceButton(context),
+                    Column(
+                      children: [
+                        _buildServiceTypeField(),
+                        _buildServiceDescriptionField(),
+                      ],
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          Text('Metodo de pago'),
+                          _buildPaymentMethodField()
+                        ],
+                      ),
+                    ),
+                    Expanded(flex: 4, child: _buildAttachmentsField()),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 18.0),
+                        child: _buildSendServiceButton(context),
+                      ),
                     ),
                   ],
                 ),
@@ -82,7 +95,6 @@ class _FormPageState extends State<FormPage> {
   Widget _buildPaymentMethodField() {
     return Column(
       children: <Widget>[
-        Text('Metodo de pago'),
         DropdownButton(
           value: initialValue,
           items: <DropdownMenuItem<Payment>>[
@@ -105,13 +117,18 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
+  //TODO: Usar multi image picker para insertar imagenes (al menos 3)
+  // Crear una lista donde se almacenaran las imagenes
+  // El listado sera un widget ServiceImage, que permitira poder darle tap para poder acercar la imagen
   Widget _buildAttachmentsField() {
-    return Row(
-      children: <Widget>[
-        Expanded(child: Image.asset('assets/plomero.jpg')),
-        Expanded(child: Image.asset('assets/electrico.jpg')),
-        Expanded(child: Image.asset('assets/ingeniero.jpg')),
-      ],
+    return Container(
+      child: ListView(
+        children: <Widget>[
+          Image.asset('assets/plomero.jpg'),
+          Image.asset('assets/electrico.jpg'),
+          Image.asset('assets/ingeniero.jpg'),
+        ],
+      ),
     );
   }
 
@@ -152,9 +169,6 @@ class _FormPageState extends State<FormPage> {
     final user = Provider.of<FirebaseUser>(context, listen: false);
     final firestore = Provider.of<FirestoreService>(context, listen: false);
 
-    final String hello = user.uid;
-    print(hello);
-
     setState(() {
       _loading = true;
     });
@@ -177,27 +191,6 @@ class _FormPageState extends State<FormPage> {
     );
 
     await firestore.setService(user.uid, newService);
-
-  //   String username = "pepsua47@gmail.com";
-  //   String password = "modapalafoka3";
-
-  //   final smtpServer = gmail(username, password); 
-  //   // Creating the Gmail server
-
-  // // Create our email message.
-  //   final message = Message()
-  //     ..from = Address(username)
-  //     ..recipients.add('dest@example.com') //recipent email
-  //     ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}' //subject of the email
-  //     ..text = 'This is the plain text.\nThis is line 2 of the text part.' ;//body of the email
-
-  //   try {
-  //     final sendReport = await send(message, smtpServer);
-  //     print('Message sent: ' + sendReport.toString()); //print if the email is sent
-  //   } on MailerException catch (e) {
-  //     print('Message not sent. \n'+ e.toString()); //print if the email is not sent
-  //     // e.toString() will show why the email is not sending
-  //   }
 
     setState(() {
       _loading = true;

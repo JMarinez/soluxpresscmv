@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "942647698622",
-    "firebase_url": "https://fbprovider-9cd16.firebaseio.com",
-    "project_id": "fbprovider-9cd16",
-    "storage_bucket": "fbprovider-9cd16.appspot.com"
+    "project_number": "463102482423",
+    "firebase_url": "https://expressservices-8479e.firebaseio.com",
+    "project_id": "expressservices-8479e",
+    "storage_bucket": "expressservices-8479e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:942647698622:android:1c6a11dd2f627a7687eaef",
+        "mobilesdk_app_id": "1:463102482423:android:bb180dc17629af4aa100f2",
         "android_client_info": {
-          "package_name": "com.example.firebase_user_avatar_flutter"
+          "package_name": "com.example.marinez_demo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "942647698622-th6k8pm5bb1n6g4qhb5ink5v2encnpcb.apps.googleusercontent.com",
+          "client_id": "463102482423-1ktrjijib3nd7c2s651au2e4m1qvi7ud.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCUe8zczj1JbdzuE26RFtrNARm0u6G3v-U"
+          "current_key": "AIzaSyD-biLOTOR0JH1ko7YigfJPb9ANvcYNSWs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "942647698622-th6k8pm5bb1n6g4qhb5ink5v2encnpcb.apps.googleusercontent.com",
+              "client_id": "463102482423-1ktrjijib3nd7c2s651au2e4m1qvi7ud.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

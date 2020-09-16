@@ -46,6 +46,7 @@ class _MenuPageState extends State<MenuPage> {
             ],
           ),
           body: FutureBuilder(
+            //TODO: Cambiar imaganes por iconos de Font Awesome.
             future: menuProvider.getData(),
             initialData: [],
             builder:

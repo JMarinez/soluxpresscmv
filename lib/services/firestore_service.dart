@@ -28,7 +28,6 @@ class FirestoreService {
   }
 
   Future setService(String userUid, ExpService service) async {
-
     final serviceMap = service.toMap();
 
     final path = FirestorePath.services(userUid);
@@ -69,7 +68,6 @@ class FirestoreService {
 
     if (currentUser.displayName == null) {
       userInfo.displayName = userProfile['displayName'];
-
       await currentUser.updateProfile(userInfo);
       return currentUser;
     }
@@ -77,11 +75,15 @@ class FirestoreService {
     return currentUser;
   }
 
-  Stream<List<ExpService>> serviceListStream(String userUid, int status) {
+  Stream<List<ExpService>> serviceListStream(String userUid) {
     final path = FirestorePath.services(userUid);
-    final reference = Firestore.instance.collection(path);
+    final reference = Firestore.instance
+        .collection(path)
+        .where('status', isEqualTo: Status.sent.index)
+        .where('status', isEqualTo: Status.in_progress.index);
     final data = reference.snapshots().map((snapshot) => snapshot.documents
-        .map((document) => ExpService.fromMap(document.data, document.documentID))
+        .map((document) =>
+            ExpService.fromMap(document.data, document.documentID))
         .toList());
     return data;
   }
@@ -91,14 +93,15 @@ class FirestoreService {
         .collectionGroup('services')
         .where('serviceType', isEqualTo: serviceType);
     final data = reference.snapshots().map((snapshot) => snapshot.documents
-        .map((document) => ExpService.fromMap(document.data, document.documentID))
+        .map((document) =>
+            ExpService.fromMap(document.data, document.documentID))
         .toList());
-    print(data);
     return data;
   }
 
   Future updateServiceStatus(ExpService service, double newStatus) async {
-    final reference = Firestore.instance.document(FirestorePath.service(service.userUid, service.uid));
+    final reference = Firestore.instance
+        .document(FirestorePath.service(service.userUid, service.uid));
     service.updateStatus(newStatus.toInt());
     await reference.setData(service.toMap());
   }
