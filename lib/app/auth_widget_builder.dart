@@ -5,7 +5,7 @@ import 'package:marinez_demo/services/firestore_service.dart';
 import 'package:provider/provider.dart';
 
 class AuthWidgetBuilder extends StatelessWidget {
-  final Widget Function(BuildContext, AsyncSnapshot<FirebaseUser>) builder;
+  final Widget Function(BuildContext, AsyncSnapshot<User>) builder;
 
   AuthWidgetBuilder({@required this.builder});
 
@@ -21,7 +21,7 @@ class AuthWidgetBuilder extends StatelessWidget {
         if (user != null) {
           return MultiProvider(
             providers: [
-              Provider<FirebaseUser>.value(
+              Provider<User>.value(
                 value: user,
               ),
               Provider<FirestoreService>(

@@ -66,7 +66,7 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Drawer _buildDrawer(BuildContext context, FirebaseAuthService firebaseAuth) {
-    final user = Provider.of<FirebaseUser>(context, listen: false);
+    final user = Provider.of<User>(context, listen: false);
 
     return Drawer(
       child: ListView(

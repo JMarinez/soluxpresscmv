@@ -12,7 +12,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firestore = Provider.of<FirestoreService>(context);
-    final user = Provider.of<FirebaseUser>(context, listen: false);
+    final user = Provider.of<User>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

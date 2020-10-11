@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marinez_demo/components/loading_widget.dart';
@@ -27,6 +30,8 @@ class _FormPageState extends State<FormPage> {
 
   bool _loading = false;
 
+  PickedFile _image;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -50,14 +55,11 @@ class _FormPageState extends State<FormPage> {
                         _buildServiceDescriptionField(),
                       ],
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        children: [
-                          Text('Metodo de pago'),
-                          _buildPaymentMethodField()
-                        ],
-                      ),
+                    Column(
+                      children: [
+                        Text('Metodo de pago'),
+                        _buildPaymentMethodField()
+                      ],
                     ),
                     Expanded(flex: 4, child: _buildAttachmentsField()),
                     Expanded(
@@ -89,6 +91,12 @@ class _FormPageState extends State<FormPage> {
     return FormInput(
       controller: _description,
       hintText: 'Descripcion',
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor describa su situacion';
+        }
+        return null;
+      },
     );
   }
 
@@ -117,18 +125,32 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
-  //TODO: Usar multi image picker para insertar imagenes (al menos 3)
-  // Crear una lista donde se almacenaran las imagenes
+  Future getImage() async {
+    ImagePicker imagePicker = ImagePicker();
+
+    var image = await imagePicker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  //TODO: Usar image picker para insertar una imagen
   // El listado sera un widget ServiceImage, que permitira poder darle tap para poder acercar la imagen
   Widget _buildAttachmentsField() {
-    return Container(
-      child: ListView(
-        children: <Widget>[
-          Image.asset('assets/plomero.jpg'),
-          Image.asset('assets/electrico.jpg'),
-          Image.asset('assets/ingeniero.jpg'),
-        ],
+    return GestureDetector(
+      child: Container(
+        decoration: BoxDecoration(border: Border.all()),
+        width: double.infinity,
+        child: _image == null ? Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add_a_photo),
+            Text('Seleccione una imagen'),
+          ],
+        ) : Image.file(File(_image.path)),
       ),
+      onTap: () => getImage(), //print("Image"),
     );
   }
 
@@ -166,7 +188,7 @@ class _FormPageState extends State<FormPage> {
   }
 
   Future _sendService(BuildContext context) async {
-    final user = Provider.of<FirebaseUser>(context, listen: false);
+    final user = Provider.of<User>(context, listen: false);
     final firestore = Provider.of<FirestoreService>(context, listen: false);
 
     setState(() {
@@ -175,7 +197,7 @@ class _FormPageState extends State<FormPage> {
 
     final snapshot = await firestore.getUserProfile(user);
 
-    final userProfile = ProfileReference.fromMap(snapshot.data);
+    final userProfile = ProfileReference.fromMap(snapshot.data());
 
     final newService = ExpService(
       address: userProfile.address,

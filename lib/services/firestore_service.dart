@@ -14,30 +14,30 @@ class FirestoreService {
 
   Future setUserProfile(ProfileReference profileReference) async {
     final path = FirestorePath.profile(profileReference.userUid);
-    final reference = Firestore.instance.document(path);
+    final reference = FirebaseFirestore.instance.doc(path);
 
-    await reference.setData(profileReference.toMap());
+    await reference.set(profileReference.toMap());
   }
 
   Stream<ProfileReference> userProfileStream(String userUid) {
     final path = FirestorePath.profile(userUid);
-    final reference = Firestore.instance.document(path);
+    final reference = FirebaseFirestore.instance.doc(path);
     final snapshots = reference.snapshots();
 
-    return snapshots.map((snapshot) => ProfileReference.fromMap(snapshot.data));
+    return snapshots.map((snapshot) => ProfileReference.fromMap(snapshot.data()));
   }
 
   Future setService(String userUid, ExpService service) async {
     final serviceMap = service.toMap();
 
     final path = FirestorePath.services(userUid);
-    final reference = Firestore.instance.collection(path);
+    final reference = FirebaseFirestore.instance.collection(path);
     await reference.add(serviceMap);
   }
 
-  Future<DocumentSnapshot> getUserProfile(FirebaseUser user) async {
+  Future<DocumentSnapshot> getUserProfile(User user) async {
     final path = FirestorePath.profile(user.uid);
-    final document = Firestore.instance.document(path);
+    final document = FirebaseFirestore.instance.doc(path);
 
     final profile = await document.get();
 
@@ -48,10 +48,9 @@ class FirestoreService {
       return Future.delayed(duration, () async {
         final profile = await document.get();
 
-        final userInfo = UserUpdateInfo();
-        userInfo.displayName = profile['displayName'];
+        String displayName = profile['displayName'];
 
-        await user.updateProfile(userInfo);
+        await user.updateProfile(displayName: displayName);
         await user.reload();
 
         return profile;
@@ -59,16 +58,15 @@ class FirestoreService {
     }
   }
 
-  Future<FirebaseUser> updateDisplayName(
+  Future<User> updateDisplayName(
       BuildContext context, DocumentSnapshot userProfile) async {
     final user = Provider.of<FirebaseAuthService>(context, listen: false);
-    final userInfo = UserUpdateInfo();
 
-    final currentUser = await user.currentUser();
+    final currentUser = user.currentUser();
 
     if (currentUser.displayName == null) {
-      userInfo.displayName = userProfile['displayName'];
-      await currentUser.updateProfile(userInfo);
+      String displayName = userProfile['displayName'];
+      await currentUser.updateProfile(displayName: displayName);
       return currentUser;
     }
 
@@ -77,32 +75,32 @@ class FirestoreService {
 
   Stream<List<ExpService>> serviceListStream(String userUid) {
     final path = FirestorePath.services(userUid);
-    final reference = Firestore.instance
+    final reference = FirebaseFirestore.instance
         .collection(path)
         .where('status', isEqualTo: Status.sent.index)
         .where('status', isEqualTo: Status.in_progress.index);
-    final data = reference.snapshots().map((snapshot) => snapshot.documents
+    final data = reference.snapshots().map((snapshot) => snapshot.docs
         .map((document) =>
-            ExpService.fromMap(document.data, document.documentID))
+            ExpService.fromMap(document.data(), document.id))
         .toList());
     return data;
   }
 
   Stream<List<ExpService>> masterServiceListStream(int serviceType) {
-    final reference = Firestore.instance
+    final reference = FirebaseFirestore.instance
         .collectionGroup('services')
         .where('serviceType', isEqualTo: serviceType);
-    final data = reference.snapshots().map((snapshot) => snapshot.documents
+    final data = reference.snapshots().map((snapshot) => snapshot.docs
         .map((document) =>
-            ExpService.fromMap(document.data, document.documentID))
+            ExpService.fromMap(document.data(), document.id))
         .toList());
     return data;
   }
 
   Future updateServiceStatus(ExpService service, double newStatus) async {
-    final reference = Firestore.instance
-        .document(FirestorePath.service(service.userUid, service.uid));
+    final reference = FirebaseFirestore.instance
+        .doc(FirestorePath.service(service.userUid, service.uid));
     service.updateStatus(newStatus.toInt());
-    await reference.setData(service.toMap());
+    await reference.set(service.toMap());
   }
 }

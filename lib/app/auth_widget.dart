@@ -11,7 +11,7 @@ import 'package:marinez_demo/app/screens/auth/login_signup_page_view.dart';
 import 'package:marinez_demo/services/firestore_service.dart';
 
 class AuthWidget extends StatelessWidget {
-  final AsyncSnapshot<FirebaseUser> userSnapshot;
+  final AsyncSnapshot<User> userSnapshot;
 
   AuthWidget({@required this.userSnapshot});
 
@@ -40,10 +40,10 @@ class AuthWidget extends StatelessWidget {
                 future:
                     _firestore.updateDisplayName(context, profileSnapshot.data),
                 builder:
-                    (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+                    (BuildContext context, AsyncSnapshot<User> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     final userProfile =
-                        ProfileReference.fromMap(profileSnapshot.data?.data);
+                        ProfileReference.fromMap(profileSnapshot.data?.data());
                     return userProfile.role == 'admin'
                         ? AdminMenuPage()
                         : MenuPage();
