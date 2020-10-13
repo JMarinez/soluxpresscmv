@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:marinez_demo/services/firebase_storage_service.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marinez_demo/app/auth_widget.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
         ),
         Provider<FirestoreService>(
           create: (_) => FirestoreService(),
+        ),
+        Provider<FirebaseStorageService>(
+          create: (_) => FirebaseStorageService(),
         ),
       ],
       child: AuthWidgetBuilder(

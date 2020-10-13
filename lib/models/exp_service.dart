@@ -13,21 +13,22 @@ class ExpService {
   final int payingMethod;
   final DateTime date;
   int status; //Change to private?
+  final String photoUrl;
 
-  ExpService({
-    this.uid,
-    this.serviceType,
-    this.description,
-    this.images,
-    this.userUid,
-    this.userFullName,
-    this.userEmail,
-    this.payingMethod,
-    this.userPhoneNumber,
-    this.status,
-    this.address,
-    this.date,
-  });
+  ExpService(
+      {this.uid,
+      this.serviceType,
+      this.description,
+      this.images,
+      this.userUid,
+      this.userFullName,
+      this.userEmail,
+      this.payingMethod,
+      this.userPhoneNumber,
+      this.status,
+      this.address,
+      this.date,
+      this.photoUrl});
 
   String getServiceTypeDescription(int serviceType) {
     if (serviceType == ServiceType.electricity.index) {
@@ -75,6 +76,7 @@ class ExpService {
     final String userEmail = data['userEmail'];
     final String userFullName = data['userFullName'];
     final String userPhoneNumber = data['userPhoneNumber'];
+    final String photoUrl = data['photoUrl'];
 
     if (docUid == null) {
       return null;
@@ -109,25 +111,28 @@ class ExpService {
     if (date == null) {
       return null;
     }
+    if (photoUrl == null) {
+      return null;
+    }
 
     return ExpService(
-      uid: uid,
-      address: address,
-      date: date,
-      description: description,
-      payingMethod: payingMethod,
-      serviceType: serviceType,
-      status: statusIndex,
-      userUid: userUid,
-      userEmail: userEmail,
-      userFullName: userFullName,
-      userPhoneNumber: userPhoneNumber,
-    );
+        uid: uid,
+        address: address,
+        date: date,
+        description: description,
+        payingMethod: payingMethod,
+        serviceType: serviceType,
+        status: statusIndex,
+        userUid: userUid,
+        userEmail: userEmail,
+        userFullName: userFullName,
+        userPhoneNumber: userPhoneNumber,
+        photoUrl: photoUrl);
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'uid' : uid,
+      'uid': uid,
       'address': address,
       'date': date,
       'description': description,
@@ -138,25 +143,26 @@ class ExpService {
       'userEmail': userEmail,
       'userFullName': userFullName,
       'userPhoneNumber': userPhoneNumber,
+      'photoUrl': photoUrl,
     };
   }
 }
 
 int getServiceTypeIndex(String serviceType) {
-    if (serviceType == Strings.electricity) {
-      return ServiceType.electricity.index;
-    } else if (serviceType == Strings.instalation) {
-      return ServiceType.instalation.index;
-    } else if (serviceType == Strings.misc) {
-      return ServiceType.misc.index;
-    } else if (serviceType == Strings.paint) {
-      return ServiceType.paint.index;
-    } else if (serviceType == Strings.plomber) {
-      return ServiceType.plomery.index;
-    } else {
-      return ServiceType.budget.index;
-    }
+  if (serviceType == Strings.electricity) {
+    return ServiceType.electricity.index;
+  } else if (serviceType == Strings.instalation) {
+    return ServiceType.instalation.index;
+  } else if (serviceType == Strings.misc) {
+    return ServiceType.misc.index;
+  } else if (serviceType == Strings.paint) {
+    return ServiceType.paint.index;
+  } else if (serviceType == Strings.plomber) {
+    return ServiceType.plomery.index;
+  } else {
+    return ServiceType.budget.index;
   }
+}
 
 enum Status {
   none,

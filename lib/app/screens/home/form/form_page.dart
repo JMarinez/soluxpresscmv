@@ -1,9 +1,10 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:marinez_demo/services/firebase_storage_service.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart';
 
 import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:marinez_demo/models/exp_service.dart';
@@ -130,9 +131,9 @@ class _FormPageState extends State<FormPage> {
 
     var image = await imagePicker.getImage(source: ImageSource.gallery);
 
-    setState(() {
-      _image = image;
-    });
+    if (image != null) {
+      setState(() => _image = image);
+    }
   }
 
   //TODO: Usar image picker para insertar una imagen
@@ -142,15 +143,17 @@ class _FormPageState extends State<FormPage> {
       child: Container(
         decoration: BoxDecoration(border: Border.all()),
         width: double.infinity,
-        child: _image == null ? Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.add_a_photo),
-            Text('Seleccione una imagen'),
-          ],
-        ) : Image.file(File(_image.path)),
+        child: _image == null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_a_photo),
+                  Text('Seleccione una imagen'),
+                ],
+              )
+            : Image.file(File(_image.path)),
       ),
-      onTap: () => getImage(), //print("Image"),
+      onTap: () => getImage(),
     );
   }
 
@@ -158,12 +161,14 @@ class _FormPageState extends State<FormPage> {
     return SubmitButton(
       text: 'Enviar',
       onPressed: () async {
-        await showDialog(
-          context: context,
-          builder: (context) {
-            return _showAlertDialog(context);
-          },
-        );
+        if (globalKey.currentState.validate()) {
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return _showAlertDialog(context);
+            },
+          );
+        }
         Navigator.pop(context);
       },
     );
@@ -190,6 +195,7 @@ class _FormPageState extends State<FormPage> {
   Future _sendService(BuildContext context) async {
     final user = Provider.of<User>(context, listen: false);
     final firestore = Provider.of<FirestoreService>(context, listen: false);
+    final storage = Provider.of<FirebaseStorageService>(context, listen: false);
 
     setState(() {
       _loading = true;
@@ -199,18 +205,27 @@ class _FormPageState extends State<FormPage> {
 
     final userProfile = ProfileReference.fromMap(snapshot.data());
 
+    final file = File(_image.path);
+
+     final fileName = basename(file.path);
+
+    final storageSnapshot =
+        await storage.uploadImage('${user.uid}/serviceImages/$fileName', file);
+
+    final photoUrl = await storageSnapshot.ref.getDownloadURL();
+
     final newService = ExpService(
-      address: userProfile.address,
-      date: DateTime.now(),
-      description: _description.text,
-      payingMethod: initialValue.index,
-      serviceType: getServiceTypeIndex(widget.title),
-      status: Status.sent.index,
-      userUid: user.uid,
-      userEmail: userProfile.email,
-      userFullName: userProfile.displayName,
-      userPhoneNumber: userProfile.phoneNumber,
-    );
+        address: userProfile.address,
+        date: DateTime.now(),
+        description: _description.text,
+        payingMethod: initialValue.index,
+        serviceType: getServiceTypeIndex(widget.title),
+        status: Status.sent.index,
+        userUid: user.uid,
+        userEmail: userProfile.email,
+        userFullName: userProfile.displayName,
+        userPhoneNumber: userProfile.phoneNumber,
+        photoUrl: photoUrl);
 
     await firestore.setService(user.uid, newService);
 

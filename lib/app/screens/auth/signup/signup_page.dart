@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:provider/provider.dart';

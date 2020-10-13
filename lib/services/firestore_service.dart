@@ -24,7 +24,8 @@ class FirestoreService {
     final reference = FirebaseFirestore.instance.doc(path);
     final snapshots = reference.snapshots();
 
-    return snapshots.map((snapshot) => ProfileReference.fromMap(snapshot.data()));
+    return snapshots
+        .map((snapshot) => ProfileReference.fromMap(snapshot.data()));
   }
 
   Future setService(String userUid, ExpService service) async {
@@ -75,13 +76,11 @@ class FirestoreService {
 
   Stream<List<ExpService>> serviceListStream(String userUid) {
     final path = FirestorePath.services(userUid);
-    final reference = FirebaseFirestore.instance
-        .collection(path)
-        .where('status', isEqualTo: Status.sent.index)
-        .where('status', isEqualTo: Status.in_progress.index);
+    final reference = FirebaseFirestore.instance.collection(path).where(
+        'status',
+        whereIn: [Status.sent.index, Status.in_progress.index]);
     final data = reference.snapshots().map((snapshot) => snapshot.docs
-        .map((document) =>
-            ExpService.fromMap(document.data(), document.id))
+        .map((document) => ExpService.fromMap(document.data(), document.id))
         .toList());
     return data;
   }
@@ -91,8 +90,7 @@ class FirestoreService {
         .collectionGroup('services')
         .where('serviceType', isEqualTo: serviceType);
     final data = reference.snapshots().map((snapshot) => snapshot.docs
-        .map((document) =>
-            ExpService.fromMap(document.data(), document.id))
+        .map((document) => ExpService.fromMap(document.data(), document.id))
         .toList());
     return data;
   }
