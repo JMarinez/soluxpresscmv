@@ -33,7 +33,7 @@ class ServicesListBody extends StatelessWidget {
               leading: CircleAvatar(
                 child: Icon(Icons.person),
               ),
-              title: Text(_serviceList[index].description),
+              title: Text(_serviceList[index].description?? ""),
               subtitle: Text(_serviceList[index].userFullName),
               trailing: Icon(Icons.arrow_right),
               onTap: () => Navigator.push(
