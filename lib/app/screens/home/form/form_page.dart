@@ -178,11 +178,11 @@ class _FormPageState extends State<FormPage> {
     return AlertDialog(
       title: Text('Desea enviar este servicio?'),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text('Cancelar',
                 style: TextStyle(color: Theme.of(context).primaryColor))),
-        FlatButton(
+        TextButton(
             onPressed: () async {
               await _sendService(context);
             },
@@ -207,7 +207,7 @@ class _FormPageState extends State<FormPage> {
 
     final file = File(_image.path);
 
-     final fileName = basename(file.path);
+    final fileName = basename(file.path);
 
     final storageSnapshot =
         await storage.uploadImage('${user.uid}/serviceImages/$fileName', file);

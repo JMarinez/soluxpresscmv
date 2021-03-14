@@ -52,15 +52,23 @@ class _MenuPageState extends State<MenuPage> {
             builder:
                 (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: LoadingWidget()
+                return Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  color: Colors.white,
                 );
               }
               return getMenuGrid(snapshot, context);
             },
           ),
         ),
-        _loading ? LoadingWidget() : Container()
+        _loading
+            ? Container(
+                height: double.infinity,
+                width: double.infinity,
+                color: Colors.white,
+              )
+            : Container()
       ],
     );
   }

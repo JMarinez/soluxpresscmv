@@ -11,10 +11,6 @@ class LoadingWidget extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        Opacity(
-          opacity: 0.5,
-          child: Container(color: Theme.of(context).accentColor),
-        ),
         Card(
           elevation: 0,
           child: Container(

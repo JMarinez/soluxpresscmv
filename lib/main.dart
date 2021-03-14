@@ -8,7 +8,7 @@ import 'package:marinez_demo/services/firebase_auth_service.dart';
 import 'package:marinez_demo/services/firestore_service.dart';
 import 'app/auth_widget_builder.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               primaryColor: Color(0xffffb81e),
               accentColor: Color(0xff55595f),
               buttonColor: Color(0xff55595f),
-              cursorColor: Color(0xfffbfef3),
+              //cursorColor: Color(0xfffbfef3),
             ),
           );
         },

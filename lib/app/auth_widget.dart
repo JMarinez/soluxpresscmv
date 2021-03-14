@@ -23,48 +23,33 @@ class AuthWidget extends StatelessWidget {
 
     final _firestore = Provider.of<FirestoreService>(context, listen: false);
 
-    if (userSnapshot.connectionState == ConnectionState.active) {
-      if (userSnapshot.hasData) {
-        return FutureBuilder(
-          future: _firestore.getUserProfile(userSnapshot.data),
-          builder: (BuildContext context,
-              AsyncSnapshot<DocumentSnapshot> profileSnapshot) {
-            if (profileSnapshot.connectionState == ConnectionState.waiting) {
-              return Scaffold(
-                body: Center(child: LoadingWidget()),
-              );
-            } else if (profileSnapshot.connectionState ==
-                    ConnectionState.done &&
-                profileSnapshot.data.data != null) {
-              return FutureBuilder(
-                future:
-                    _firestore.updateDisplayName(context, profileSnapshot.data),
-                builder:
-                    (BuildContext context, AsyncSnapshot<User> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    final userProfile =
-                        ProfileReference.fromMap(profileSnapshot.data?.data());
-                    return userProfile.role == 'admin'
-                        ? AdminMenuPage()
-                        : MenuPage();
-                  }
-                  return Scaffold(
-                    body: Center(child: LoadingWidget()),
-                  );
-                },
-              );
-            }
-            return Scaffold(
-              body: Center(child: LoadingWidget()),
+    if (userSnapshot.hasData) {
+      return FutureBuilder(
+        future: _firestore.getUserProfile(userSnapshot.data),
+        builder: (BuildContext context,
+            AsyncSnapshot<DocumentSnapshot> profileSnapshot) {
+          if (profileSnapshot.connectionState == ConnectionState.done &&
+              profileSnapshot.data.data != null) {
+            return FutureBuilder(
+              future:
+                  _firestore.updateDisplayName(context, profileSnapshot.data),
+              builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                final userProfile =
+                    ProfileReference.fromMap(profileSnapshot.data?.data());
+                return userProfile.role == 'admin'
+                    ? AdminMenuPage()
+                    : MenuPage();
+              },
             );
-          },
-        );
-      } else {
-        return LoginSignupPageView();
-      }
+          }
+          return Scaffold(
+            body: Center(child: LoadingWidget()),
+            backgroundColor: Colors.white,
+          );
+        },
+      );
+    } else {
+      return LoginSignupPageView();
     }
-    return Scaffold(
-      body: Center(child: LoadingWidget()),
-    );
   }
 }

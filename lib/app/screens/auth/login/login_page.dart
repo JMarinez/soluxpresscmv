@@ -63,7 +63,13 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        _loading ? LoadingWidget() : Container()
+        _loading
+            ? Container(
+                height: double.infinity,
+                width: double.infinity,
+                color: Colors.white,
+              )
+            : Container()
       ],
     );
   }
