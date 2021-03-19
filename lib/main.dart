@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: AuthWidget(userSnapshot: userSnapshot),
             theme: ThemeData(
-              primaryColor: Color(0xffffb81e),
+              primaryColor: Color(0xFFfbb324),
               accentColor: Color(0xff55595f),
               buttonColor: Color(0xff55595f),
               //cursorColor: Color(0xfffbfef3),
