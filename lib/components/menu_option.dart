@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:marinez_demo/components/option_clip.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MenuOption extends StatelessWidget {
   final String title;
-  final String imageData;
+  final IconData iconData;
   final Function onPressed;
 
-  MenuOption({this.title, this.imageData, this.onPressed});
+  MenuOption({this.title, this.iconData, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +15,15 @@ class MenuOption extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: ClipOval(
-                child: Image.asset(imageData),
-                clipper: OptionClip(),
+              child: Container(
+                color: Theme.of(context).accentColor,
+                child: Center(
+                  child: FaIcon(
+                    iconData,
+                    size: 40,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
               ),
             ),
             SizedBox(
@@ -28,7 +34,7 @@ class MenuOption extends StatelessWidget {
               style: TextStyle(fontSize: 20.0),
             ),
             SizedBox(
-              height: 40.0,
+              height: 20.0,
             ),
           ],
         ),

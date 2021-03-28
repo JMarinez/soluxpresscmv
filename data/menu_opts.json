@@ -4,31 +4,37 @@
         {
             "route" : "electricidad",
             "image" : "assets/electricidad.jpg",
+            "icon": "bolt", 
             "text": "Electricidad"
         },
         {
             "route" : "instalacion",
             "image": "assets/instalacion.jpg",
+            "icon": "hardhat",
             "text": "Instalaciones"
         },
         {
             "route" : "miscelaneos",
             "image" :"assets/miscelaneos.jpg",
+            "icon": "tools",
             "text": "Miscelaneos"
         },
         {
             "route" : "pintura",
             "image" :"assets/pintura.jpg",
+            "icon": "paint",
             "text": "Pintura"
         },
         {
             "route" : "plomeria",
             "image" : "assets/plomeria.jpg",
+            "icon": "faucet",
             "text": "Plomeria"
         },
         {
             "route" : "presupuesto",
             "image" :"assets/presupuesto.jpg",
+            "icon": "invoice",
             "text": "Presupuesto"
         }
     ]

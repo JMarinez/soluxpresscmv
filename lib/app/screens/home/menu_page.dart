@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 
 import 'package:marinez_demo/app/screens/home/form/form_page.dart';
 import 'package:marinez_demo/app/screens/home/profile/profile_page.dart';
-import 'package:marinez_demo/components/loading_widget.dart';
 import 'package:marinez_demo/services/firebase_auth_service.dart';
 import 'package:marinez_demo/services/menu_provider.dart';
 import 'package:marinez_demo/components/menu_option.dart';
 import 'service_pages/service_tab_page/pending_services_page.dart';
+import 'package:marinez_demo/utils/string_icon_util.dart';
 
 class MenuPage extends StatefulWidget {
   @override
@@ -147,7 +147,7 @@ class _MenuPageState extends State<MenuPage> {
       (option) {
         var temp = MenuOption(
           title: option['text'],
-          imageData: option['image'],
+          iconData: getIcon(option['icon']),
           onPressed: () {
             Navigator.push(
               context,
