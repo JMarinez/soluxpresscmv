@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     return Stack(
       children: <Widget>[
         Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xFFfbb324),
           body: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -47,15 +47,23 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(36.0),
-                    child: Text(
-                      'Servicios Express',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 50.0),
+                    child: Container(
+                      height: 200,
+                      width: 500,
+                      child: FittedBox(
+                        fit: BoxFit.cover,
+                        child: Image.asset('assets/logo.png'),
+                      ),
                     ),
+                    // child: Text(
+                    //   'SoluXpress',
+                    //   textAlign: TextAlign.center,
+                    //   style: TextStyle(fontSize: 50.0),
+                    // ),
                   ),
                   _buildLoginForm(context, formKey),
                   Padding(
-                    padding: EdgeInsets.only(top: 50.0),
+                    padding: EdgeInsets.only(top: 20.0),
                     child: _buildSignupPagePush(context),
                   ),
                 ],
@@ -102,7 +110,10 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             _buildEmailField(),
             _buildPasswordField(),
-            _buildLoginButton(context),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: _buildLoginButton(context),
+            ),
           ],
         ),
       ),
@@ -111,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildLoginButton(BuildContext context) {
     return SubmitButton(
-      text: 'Log in',
+      text: 'Iniciar sesion',
       onPressed: () async {
         try {
           if (formKey.currentState.validate()) {
@@ -169,13 +180,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildSignupPagePush(BuildContext context) {
-    return GestureDetector(
-        child: Text(
-          'No tienes una cuenta? Registrate.',
-          style:
-              TextStyle(fontSize: 16.0, decoration: TextDecoration.underline),
-        ),
-        onTap: () {
+    return SubmitButton(
+        text: 'Registrate',
+        onPressed: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();

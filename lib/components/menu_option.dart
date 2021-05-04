@@ -16,13 +16,16 @@ class MenuOption extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Container(
-                color: Theme.of(context).accentColor,
                 child: Center(
                   child: FaIcon(
                     iconData,
-                    size: 40,
+                    size: 60,
                     color: Theme.of(context).primaryColor,
                   ),
+                ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.circular(15),
                 ),
               ),
             ),

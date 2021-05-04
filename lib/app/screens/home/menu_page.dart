@@ -28,13 +28,13 @@ class _MenuPageState extends State<MenuPage> {
         Scaffold(
           drawer: _buildDrawer(context, firebaseAuth),
           appBar: AppBar(
-            title: Text('Servicios Express'),
+            title: Text('SoluXpress'),
             centerTitle: true,
             actions: <Widget>[
               IconButton(
                 icon: Icon(
                   Icons.inbox,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 onPressed: () => Navigator.push(
                   context,

@@ -47,6 +47,7 @@ class _SignupPageState extends State<SignupPage> {
           appBar: AppBar(
             leading: IconButton(
                 icon: Icon(Icons.arrow_back),
+                color: Colors.black,
                 onPressed: () => widget.slideToLoginPage(0)),
             backgroundColor: Colors.white,
             elevation: 0,

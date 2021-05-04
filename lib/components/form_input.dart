@@ -27,6 +27,7 @@ class FormInput extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: TextFormField(
         initialValue: initialValue,
+        cursorColor: Color(0xFFfbb324),
         readOnly: readOnly,
         focusNode: focusNode,
         controller: controller,
@@ -38,7 +39,7 @@ class FormInput extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(0),
+            borderRadius: BorderRadius.circular(15),
           ),
         ),
       ),
