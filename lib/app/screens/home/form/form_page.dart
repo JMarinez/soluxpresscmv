@@ -24,13 +24,10 @@ class FormPage extends StatefulWidget {
 
 class _FormPageState extends State<FormPage> {
   final globalKey = GlobalKey<FormState>();
-
   TextEditingController _description = TextEditingController();
-
   Payment initialValue = Payment.cash;
-
+  List<bool> _selections = List.generate(2, (index) => false);
   bool _loading = false;
-
   PickedFile _image;
 
   @override
@@ -45,33 +42,15 @@ class _FormPageState extends State<FormPage> {
           body: Container(
             child: Form(
               key: globalKey,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Column(
-                      children: [
-                        _buildServiceTypeField(),
-                        _buildServiceDescriptionField(),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text('Metodo de pago'),
-                        _buildPaymentMethodField()
-                      ],
-                    ),
-                    Expanded(flex: 4, child: _buildAttachmentsField()),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 18.0),
-                        child: _buildSendServiceButton(context),
-                      ),
-                    ),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  _buildServiceDescriptionField(),
+                  Text('Metodo de pago'),
+                  _buildPaymentMethodField(),
+                  _buildAttachmentsField(),
+                  _buildSendServiceButton(context),
+                ],
               ),
             ),
           ),
@@ -102,29 +81,66 @@ class _FormPageState extends State<FormPage> {
   }
 
   Widget _buildPaymentMethodField() {
-    return Column(
-      children: <Widget>[
-        DropdownButton(
-          value: initialValue,
-          items: <DropdownMenuItem<Payment>>[
-            DropdownMenuItem(
-              child: Text('Efectivo'),
-              value: Payment.cash,
-            ),
-            DropdownMenuItem(
-              child: Text('Transaccion'),
-              value: Payment.transaction,
-            ),
-          ],
-          onChanged: (Payment newValue) {
-            setState(() {
-              initialValue = newValue;
-            });
-          },
-        ),
-      ],
+    return Container(
+      width: double.infinity,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return ToggleButtons(
+            constraints: BoxConstraints.expand(width: 150),
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                child: Text('Tranferencia'),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                child: Text('Efectivo'),
+              ),
+            ],
+            onPressed: (int index) {
+              setState(() {
+                for (int buttonIndex = 0;
+                    buttonIndex < _selections.length;
+                    buttonIndex++) {
+                  if (buttonIndex == index) {
+                    _selections[buttonIndex] = true;
+                  } else {
+                    _selections[buttonIndex] = false;
+                  }
+                }
+              });
+            },
+            isSelected: _selections,
+          );
+        },
+      ),
     );
   }
+
+  // Widget _buildPaymentMethodField() {
+  //   return Column(
+  //     children: <Widget>[
+  //       DropdownButton(
+  //         value: initialValue,
+  //         items: <DropdownMenuItem<Payment>>[
+  //           DropdownMenuItem(
+  //             child: Text('Efectivo'),
+  //             value: Payment.cash,
+  //           ),
+  //           DropdownMenuItem(
+  //             child: Text('Transaccion'),
+  //             value: Payment.transaction,
+  //           ),
+  //         ],
+  //         onChanged: (Payment newValue) {
+  //           setState(() {
+  //             initialValue = newValue;
+  //           });
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Future getImage() async {
     ImagePicker imagePicker = ImagePicker();
