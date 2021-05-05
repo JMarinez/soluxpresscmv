@@ -13,9 +13,22 @@ class SubmitButton extends StatelessWidget {
       child: Text(text),
       style: ElevatedButton.styleFrom(
         primary: Theme.of(context).primaryColor,
+        minimumSize: Size(double.infinity, 50),
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return ElevatedButton(
+  //     onPressed: onPressed,
+  //     child: Text(text),
+  //     style: ElevatedButton.styleFrom(
+  //       primary: Theme.of(context).primaryColor,
+  //     ),
+  //   );
+  // }
+
   // @override
   // Widget build(BuildContext context) {
   //   return GestureDetector(

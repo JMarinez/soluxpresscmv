@@ -19,7 +19,7 @@ class MenuOption extends StatelessWidget {
                 child: Center(
                   child: FaIcon(
                     iconData,
-                    size: 60,
+                    size: 55,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),

@@ -62,10 +62,6 @@ class _LoginPageState extends State<LoginPage> {
                     // ),
                   ),
                   _buildLoginForm(context, formKey),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: _buildSignupPagePush(context),
-                  ),
                 ],
               ),
             ),
@@ -111,8 +107,12 @@ class _LoginPageState extends State<LoginPage> {
             _buildEmailField(),
             _buildPasswordField(),
             Padding(
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: EdgeInsets.only(top: 20.0),
               child: _buildLoginButton(context),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20.0),
+              child: _buildSignupPagePush(context),
             ),
           ],
         ),
